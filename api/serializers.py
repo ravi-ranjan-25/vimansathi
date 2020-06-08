@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Product,order,userdetails
+from api.models import Product,order,userdetails,Complain,Tax
 
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField()
@@ -51,3 +51,21 @@ class orderSerializer(serializers.Serializer):
 #     class Meta:
 #         model = event
 #         fields = '__all__'
+
+class complainSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField('Complain')
+    
+    class Meta:
+        model = Complain
+        fields = '__all__'
+
+    def Complain(self,wall): 
+         user1 = wall.user.username
+        #  print(username)
+         return user1
+
+
+class transactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tax
+        fields = '__all__'

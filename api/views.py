@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.http import JsonResponse
 import random
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
-# from rest_framework.generics import ListAPIView
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer
+from rest_framework.generics import ListAPIView
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -105,7 +105,8 @@ def login(request):
     if user1 is not None:
         house = userdetails.objects.get(user = user1)
         return JsonResponse({'result':1,'username':user1.username,'email':user1.email,'firstname':user1.first_name,
-                                'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,'category': house.category,'airport':house.airport,'services':house.services})
+                                'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,'category': house.category,
+                                'address':house.airport,'services':house.services,'doctor':house.doctor,'active':house.active,'risk':house.risk})
     
     else:
         return JsonResponse({'result':0,'message':'Incorrect username or password'})
@@ -444,4 +445,66 @@ def viewpendingpatient(request):
         
     return JsonResponse({'result':list})
         
+
+class complainListView(ListAPIView):
+    queryset = Complain.objects.all()
+    serializer_class = complainSerializer
+
+def complainss(request):
+    userName = request.GET.get('username')
+    complains = request.GET.get('complain')
+    complainid1 = request.GET.get('complainid')
+
+
+
+    user1 = User.objects.get(username=userName)
+
+    complaint = random.randint(100,999) + random.randint(9999,10000) + user1.pk
+    
+    complaint = "COMP25"+str(complaint)
+
+    print(complaint)
+    comp = Complain(complain = complains,complainid = complainid1,complaintxn = complaint )
+    comp.user = user1
+    comp.save()    
+
+    return JsonResponse({'result': 1})
+
+def resolveComplain(request):
+    get_id = request.GET.get('id')
+
+    comp = Complain.objects.get(pk=get_id)
+    comp.status = True
+
+    comp.save()
+    return JsonResponse({'result':1})  
+
+def paytmCall(request):
+        username1 = request.GET.get('username')
+        am = request.GET.get('TXN_AMOUNT')
+
+        user1 = User.objects.get(username = username1)
+        user2 = User.objects.get(username = 'admin')
+        
+        # print(user2)
+        complaint = random.randint(100,999) + random.randint(9999,10000) + user1.pk
+    
+        txn = "TXN25"+str(complaint)
+        wall = wallet.objects.get(user=user2)
+        # wall1 = wallet.objects.get(user=user1)
+        
+        transaction = Tax(amount = am, txnid = txn)
+        transaction.user = user1
+        # wall1.amount=0
+        wall.amount = wall.amount + float(am)
+        wall.save()
+        # wall1.save()
+        transaction.save()
+        return JsonResponse({'result':1})
+
+
+
+class transactionListView(ListAPIView):
+    queryset = Tax.objects.all()
+    serializer_class = transactionSerializer
         

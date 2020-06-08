@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from api import views
 from rest_framework import routers
+from .views import complainListView,transactionListView
+
 # from .views import EventListView
 
 
@@ -42,6 +44,15 @@ urlpatterns = [
     path('doctor/accept',views.acceptpatient,name="add"),
     path('doctor/viewpendingpatient',views.viewpendingpatient,name="add"),
 
+####################################################################################
+
+    path('resolvecomplains',views.resolveComplain,name = "resolve"),
+    path('complain',views.complainss , name = "comp"),
+    # path('viewconsumption',views.viewConsumption , name = "comp2"),
+    path('showcomplains',complainListView.as_view(),name = "complain"),
+    path('donate',views.paytmCall,name = "paytmcall"),
+    # path('software/paytmcall',views.paytmCall,name = "paytmcall"),
+    path('transaction',transactionListView.as_view(),name = "transaction"),
 
 
 ]
