@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Complain,Tax,cat
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Complain,Tax
 
 # Register your models here.
 
