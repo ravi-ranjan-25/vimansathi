@@ -80,7 +80,7 @@ def signup(request):
             Airport = 'NA'
 
         if service is None:
-            service = NULL
+            service = None
         else:
             c = cat.objects.filter(name=service.upper(),store=True)
             if len(c) > 0:
