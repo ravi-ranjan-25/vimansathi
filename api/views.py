@@ -144,9 +144,9 @@ def addProduct(request):
 
     c = cat.objects.filter(name=service.upper())
     if len(c) > 0:
-        for s in c:
-            if ud.airport == s.airport:
-                service=s
+        
+        if ud.airport == c[0].airport:
+            service=c[0]
 
     else:
         Airport = ud.airport
