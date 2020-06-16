@@ -84,7 +84,7 @@ def signup(request):
         else:
             c = cat.objects.filter(name=service.upper())
             if len(c) > 0:
-                service=c
+                service=c[0]
             else:
                 z = cat(name=service.upper(),airport=Airport) 
                 z.save()
@@ -331,7 +331,7 @@ def acceptorder(request):
     o.save()
     
 
-    return JsonResponse({'result':1})
+    return JsonResponse({'result':1,'status':o.accept})
 
 def userorder(request):
     userName = request.GET.get('username')
@@ -377,23 +377,27 @@ def storeorder(request):
     delivered1 = request.GET.get('delivered')
 
     d = order.objects.get(orderdid=odid)
+
     o = storerestro.objects.get(Order=d)
 
     if prepare is not None:
         o.preparing_packaging = True
+        d.accept = 1
 
     if dispatched1 is not None:
         o.dispatched = True
-
+        d.accept = 2
+    
     if delivered1 is not None:
         o.delivered = True
+        d.accept = 3
 
     if rating1 is not None:
         o.Rating = True
 
-
+    d.save()
     o.save()    
-    return JsonResponse({'result':1})
+    return JsonResponse({'result':1,'status':d.accept})
 
 
 
