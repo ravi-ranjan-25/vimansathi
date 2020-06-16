@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Product,order,userdetails,Complain,Tax
+from api.models import Product,order,userdetails,Complain,Tax,cat
 
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField()

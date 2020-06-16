@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
