@@ -157,9 +157,7 @@ class Doctor(models.Model):
     pending = models.BooleanField(default=False)
     
     time = models.DateTimeField(default = timezone.now())
-    
-    def __str__(self):
-        return self.Order.orderid
+   
 
 class Complain(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
