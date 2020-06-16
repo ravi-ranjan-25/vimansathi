@@ -3,14 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
-# class cat(models.Model):
-#     name = models.CharField(unique = False,default="NA",max_length=256)
-#     airport = models.CharField(unique=False,default="NA",max_length=256)
-    
-
-#     def __str__(self):
-#         return self.name
-        
 
 class userdetails(models.Model):
     
