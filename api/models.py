@@ -43,7 +43,7 @@ class Product(models.Model):
     costPrice = models.FloatField(default=0.00,max_length=256)
     sellingPrice = models.FloatField(default=0.00,max_length=256)
     discount = models.FloatField(default=0.00,max_length=256)
-    # category = models.ForeignKey(cat,on_delete = models.CASCADE)
+    category = models.ForeignKey(cat,on_delete = models.CASCADE)
 
 
     def __str__(self):
