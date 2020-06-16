@@ -3,6 +3,14 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
+class cat(models.Model):
+    name = models.CharField(unique = False,default="NA",max_length=256)
+    airport = models.CharField(unique=False,default="NA",max_length=256)
+    
+
+    def __str__(self):
+        return self.name
+        
 
 class userdetails(models.Model):
     
@@ -55,7 +63,7 @@ class order(models.Model):
     product = models.ForeignKey(Product,on_delete = models.CASCADE)
     amount = models.FloatField(default=0.00,max_length=256)
     orderid=models.CharField(unique = True,default="NA",max_length=256)
-    # quantity = models.IntegerField(unique=False,default=1,max_length=256)
+    quantity = models.IntegerField(unique=False,default=1,max_length=256)
     accept = models.IntegerField(unique=False,default=-1,max_length=256)
     time = models.DateTimeField(default = timezone.now())
     
