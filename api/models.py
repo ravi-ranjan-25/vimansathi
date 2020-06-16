@@ -18,6 +18,7 @@ class userdetails(models.Model):
     mobile = models.CharField(unique = True,max_length=256)
     admin = models.BooleanField(default=False)
     objectname = models.CharField(unique = False,default="NA",max_length=256)
+    resturants = models.BooleanField(default=False)
     airport = models.CharField(unique = False,default="NA",max_length=256)
     category = models.CharField(unique = False,default="NA",max_length=256)
     services = models.CharField(unique = False,default="NA",max_length=256)
