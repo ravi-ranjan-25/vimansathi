@@ -96,7 +96,7 @@ def signup(request):
             D = False
 
         user1 = User.objects.create_user(username = userName, email=eMail, password=Password, first_name = firstname , last_name = lastname)
-        userD = userdetails(user=user1,mobile=Mobile,category=Category1,airport=Airport,objectname=Object_name,serves=service,doctor=D)
+        userD = userdetails(user=user1,mobile=Mobile,resturants=False,category=Category1,airport=Airport,objectname=Object_name,serves=service,doctor=D)
 
         w = wallet(user=user1)
         w.save()
