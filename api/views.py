@@ -146,7 +146,7 @@ def addProduct(request):
     if len(c) > 0:
         for s in c:
             if ud.airport == s.airport:
-                service=c
+                service=s
 
     else:
         Airport = ud.airport
