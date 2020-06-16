@@ -27,7 +27,7 @@ class userdetails(models.Model):
     time = models.DateTimeField(default = timezone.now())
     active = models.BooleanField(default=False)
     risk = models.IntegerField(default=0,max_length=10)
-    serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
+    # serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
 
     def __str__(self):
         return self.user.username
