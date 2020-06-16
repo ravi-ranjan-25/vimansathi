@@ -149,7 +149,7 @@ def addProduct(request):
                 service=c
 
     else:
-        Airport = c[0].airport
+        Airport = ud.airport
         z = cat(name=service.upper(),airport=Airport) 
         z.save()
         service=z   
