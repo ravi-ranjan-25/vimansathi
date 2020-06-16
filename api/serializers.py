@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Product,order,userdetails,Complain,Tax
+from api.models import Product,order,userdetails,Complain,Tax,cat
 
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField()
@@ -23,7 +23,9 @@ class userdetailsSerializer(serializers.Serializer):
     active = serializers.BooleanField()
     risk = serializers.IntegerField()
 
-
+class catSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    airport = serializers.CharField()
 
 class ProductSerializer(serializers.Serializer):
     user = UserSerializer()
@@ -36,7 +38,7 @@ class ProductSerializer(serializers.Serializer):
     costPrice = serializers.FloatField()
     sellingPrice = serializers.FloatField()
     discount = serializers.FloatField()
-    
+    category = catSerializer()
 
 class orderSerializer(serializers.Serializer):
     user = UserSerializer()
@@ -44,6 +46,7 @@ class orderSerializer(serializers.Serializer):
     amount = serializers.FloatField()
     orderid = serializers.CharField()
     accept = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 
 
 # class EventSerializer(serializers.ModelSerializer):
