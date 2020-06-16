@@ -45,11 +45,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='userdetails',
-            name='services',
-            field=models.CharField(default='NA', max_length=256),
-        ),
-        migrations.AlterField(
-            model_name='userdetails',
             name='time',
             field=models.DateTimeField(default=datetime.datetime(2020, 6, 16, 14, 44, 47, 507983, tzinfo=utc)),
         ),
