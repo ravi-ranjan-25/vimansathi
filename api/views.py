@@ -154,7 +154,7 @@ def addProduct(request):
         z.save()
         service=z   
             
-
+    print(service)
     user1 = User.objects.get(username=Username)
     # userD = userdetails.object.get(user = user1)
     proid = "PROD"+str(random.randint(9999,99999))
