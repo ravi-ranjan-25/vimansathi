@@ -6,7 +6,7 @@ from django.utils import timezone
 class cat(models.Model):
     name = models.CharField(unique = False,default="NA",max_length=256)
     airport = models.CharField(unique=False,default="NA",max_length=256)
-    
+    store = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -27,6 +27,7 @@ class userdetails(models.Model):
     time = models.DateTimeField(default = timezone.now())
     active = models.BooleanField(default=False)
     risk = models.IntegerField(default=0,max_length=10)
+    serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
 
     def __str__(self):
         return self.user.username

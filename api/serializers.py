@@ -8,6 +8,10 @@ class UserSerializer(serializers.Serializer):
     username = serializers.CharField()
     email = serializers.CharField()
 
+class catSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    airport = serializers.CharField()
+
 class userdetailsSerializer(serializers.Serializer):
     user = UserSerializer()
     mobile = serializers.CharField()
@@ -15,7 +19,7 @@ class userdetailsSerializer(serializers.Serializer):
     objectname = serializers.CharField()
     airport = serializers.CharField()
     category = serializers.CharField()
-    services = serializers.CharField()
+    serves = catSerializer()
     active = serializers.BooleanField()
     doctor = serializers.BooleanField()
     latitude = serializers.CharField()
@@ -23,9 +27,6 @@ class userdetailsSerializer(serializers.Serializer):
     active = serializers.BooleanField()
     risk = serializers.IntegerField()
 
-class catSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    airport = serializers.CharField()
 
 class ProductSerializer(serializers.Serializer):
     user = UserSerializer()

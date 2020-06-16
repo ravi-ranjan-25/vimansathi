@@ -80,13 +80,13 @@ def signup(request):
             Airport = 'NA'
 
         if service is None:
-            service = 'NA'
+            service = NULL
         else:
-            c = cat.objects.filter(name=service.upper())
+            c = cat.objects.filter(name=service.upper(),store=True)
             if len(c) > 0:
                 service=c[0]
             else:
-                z = cat(name=service.upper(),airport=Airport) 
+                z = cat(name=service.upper(),airport=Airport,store=True) 
                 z.save()
                 service=z   
         
@@ -96,7 +96,7 @@ def signup(request):
             D = False
 
         user1 = User.objects.create_user(username = userName, email=eMail, password=Password, first_name = firstname , last_name = lastname)
-        userD = userdetails(user=user1,mobile=Mobile,category=Category1,airport=Airport,objectname=Object_name,services=service,doctor=D)
+        userD = userdetails(user=user1,mobile=Mobile,category=Category1,airport=Airport,objectname=Object_name,serves=service,doctor=D)
 
         w = wallet(user=user1)
         w.save()
@@ -226,8 +226,9 @@ def viewProduct(request):
         
         cc = cat.objects.filter(airport=Airport)
         for w in cc:
-            ss = catSerializer(w)
-            catego.append(ss.data)
+            if w.store == True and w.airport == Airport:
+                ss = catSerializer(w)
+                catego.append(ss.data)
 
         for a in p:
             serial = ProductSerializer(a)
@@ -252,12 +253,16 @@ def viewProduct(request):
         for a in p:
             serial = ProductSerializer(a)
             ser = User.objects.get(username=serial.data['user']['username'])
-            print(list)
+            
+            c = catSerializer(a.category)
+            if c.data not in catego:
+                catego.append(c.data)
+
             ud = userdetails.objects.get(user=ser)
             serialud = userdetailsSerializer(ud)
             list.append({'product details':serial.data,'store details':serialud.data})
         
-        return JsonResponse({'result':1,'Product':list})
+        return JsonResponse({'result':1,'categories':catego,'Product':list})
  
     else:
         p = Product.objects.get(productid=proid)
