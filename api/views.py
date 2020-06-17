@@ -305,7 +305,7 @@ def viewliveStoreorders(request):
     
     user1 = User.objects.get(username=Username)
     
-    o = order.objects.filter(product__user=user1,accept=-1)
+    o = order.objects.filter(product__user=user1).exclude(accept=3)
     list = []
 
     for a in o:
