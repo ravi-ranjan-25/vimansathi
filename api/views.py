@@ -381,7 +381,7 @@ def storeorder(request):
     dispatched1 = request.GET.get('dispatched')
     delivered1 = request.GET.get('delivered')
 
-    d = order.objects.get(orderdid=odid)
+    d = order.objects.get(orderid=odid)
 
     o = storerestro.objects.get(Order=d)
 
