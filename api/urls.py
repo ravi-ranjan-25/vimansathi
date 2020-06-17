@@ -34,6 +34,7 @@ urlpatterns = [
     path('acceptorder',views.acceptorder,name="add"),
     path('showuserorder',views.userorder,name="add"),
     # path('storeordeer',views.userorder,name="add"),
+    path('processorder',views.storeorder,name="add"),
     
     #############################################################3
     path('doctor/active',views.setdocactive,name="add"),
