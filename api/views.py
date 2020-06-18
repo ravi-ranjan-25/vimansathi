@@ -222,20 +222,33 @@ def viewProduct(request):
 
     if isALL == 'y':
         Airport = request.GET.get('airport').upper()
+        servi = request.GET.get('services').upper()     
+        
         p = Product.objects.all()        
         
         cc = cat.objects.filter(airport=Airport)
         for w in cc:
-            if w.store == True and w.airport == Airport:
-                ss = catSerializer(w)
-                catego.append(ss.data)
+            if servi == 'STORE':
+                if w.store == True and w.airport == Airport:
+                    ss = catSerializer(w)
+                    catego.append(ss.data)
+
+            elif servi == 'RESTURANTS':
+                if w.resturants == True and w.airport == Airport:
+                    ss = catSerializer(w)
+                    catego.append(ss.data)
+
+            else:
+                if w.hotel == True and w.airport == Airport:
+                    ss = catSerializer(w)
+                    catego.append(ss.data)
+
 
         for a in p:
             serial = ProductSerializer(a)
 
             if serial.data['category']['airport'] == Airport:
 
-                servi = request.GET.get('services').upper()     
                 
                 
                 ud = userdetails.objects.get(user__username=serial.data['user']['username'])

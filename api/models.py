@@ -9,6 +9,7 @@ class cat(models.Model):
     store = models.BooleanField(default=False)
     resturants = models.BooleanField(default=False)
     hotel = models.BooleanField(default=False)
+    services = models.CharField(unique=False,default="NA",max_length=256)
 
     def __str__(self):
         return self.name
