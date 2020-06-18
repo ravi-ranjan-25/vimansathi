@@ -224,14 +224,17 @@ def viewProduct(request):
         Airport = request.GET.get('airport').upper()
         p = Product.objects.all()        
         
-        cc = cat.objects.filter(airport=Airport)
-        for w in cc:
-            if w.store == True and w.airport == Airport:
-                ss = catSerializer(w)
-                catego.append(ss.data)
+        # cc = cat.objects.filter(airport=Airport)
+        # for w in cc:
+        #     if w.store == True and w.airport == Airport:
+        #         ss = catSerializer(w)
+        #         catego.append(ss.data)
 
         for a in p:
             serial = ProductSerializer(a)
+            c = catSerializer(a.category)
+            if c.data not in catego:
+                catego.append(c.data)
 
             if serial.data['category']['airport'] == Airport:
 
