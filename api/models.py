@@ -7,6 +7,8 @@ class cat(models.Model):
     name = models.CharField(unique = False,default="NA",max_length=256)
     airport = models.CharField(unique=False,default="NA",max_length=256)
     store = models.BooleanField(default=False)
+    resturants = models.BooleanField(default=False)
+    hotel = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
