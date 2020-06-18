@@ -82,14 +82,35 @@ def signup(request):
         if service is None:
             service = None
         else:
-            c = cat.objects.filter(name=service.upper(),store=True)
-            if len(c) > 0:
-                service=c[0]
-            else:
-                z = cat(name=service.upper(),airport=Airport,store=True) 
-                z.save()
-                service=z   
+            if Category1 == 'STORE':
+                c = cat.objects.filter(name=service.upper(),store=True)
+                if len(c) > 0:
+                    service=c[0]
+                else:
+                    z = cat(name=service.upper(),airport=Airport,store=True) 
+                    z.save()
+                    service=z   
+
+            elif Category1 == 'RESTUARANTS':
+                c = cat.objects.filter(name=service.upper(),resturants=True)
+                if len(c) > 0:
+                    service=c[0]
+                else:
+                    z = cat(name=service.upper(),airport=Airport,resturants=True) 
+                    z.save()
+                    service=z   
+            
+            elif Category1 == 'HOTEL':
+                c = cat.objects.filter(name=service.upper(),hotel=True)
+                if len(c) > 0:
+                    service=c[0]
+                else:
+                    z = cat(name=service.upper(),airport=Airport,hotel=True) 
+                    z.save()
+                    service=z   
         
+
+
         if D is not None:
             D = True
         else:
