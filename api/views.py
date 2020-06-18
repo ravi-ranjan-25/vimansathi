@@ -232,14 +232,14 @@ def viewProduct(request):
 
         for a in p:
             serial = ProductSerializer(a)
-            c = catSerializer(a.category)
-            if c.data not in catego:
-                catego.append(c.data)
-
+            
             if serial.data['category']['airport'] == Airport:
 
                 servi = request.GET.get('services').upper()     
-                
+                c = catSerializer(a.category)
+                if c.data not in catego:
+                  catego.append(c.data)
+
                 
                 ud = userdetails.objects.get(user__username=serial.data['user']['username'])
                 if ud.category == servi:
