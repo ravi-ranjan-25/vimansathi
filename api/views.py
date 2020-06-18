@@ -91,8 +91,8 @@ def signup(request):
                     z.save()
                     service=z   
 
-            elif Category1 == 'RESTUARANTS':
-                c = cat.objects.filter(name=service.upper(),resturants=True)
+            elif Category1.lower() == 'restaurants':
+                c = cat.objects.filter(name=service.upper(),restaurants=True)
                 if len(c) > 0:
                     service=c[0]
                 else:
@@ -254,8 +254,8 @@ def viewProduct(request):
                     ss = catSerializer(w)
                     catego.append(ss.data)
 
-            elif servi == 'RESTURANTS':
-                if w.resturants == True and w.airport == Airport:
+            elif servi == 'RESTAURANTS':
+                if w.restaurants == True and w.airport == Airport:
                     ss = catSerializer(w)
                     catego.append(ss.data)
 
