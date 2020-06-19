@@ -91,7 +91,7 @@ def signup(request):
                     z.save()
                     service=z   
 
-            elif Category1.lower() == 'restaurants':
+            elif Category1 == 'RESTAURANTS':
                 c = cat.objects.filter(name=service.upper(),restaurants=True)
                 if len(c) > 0:
                     service=c[0]
