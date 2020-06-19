@@ -96,7 +96,7 @@ def signup(request):
                 if len(c) > 0:
                     service=c[0]
                 else:
-                    z = cat(name=service.upper(),airport=Airport,resturants=True) 
+                    z = cat(name=service.upper(),airport=Airport,restaurants=True) 
                     z.save()
                     service=z   
             
