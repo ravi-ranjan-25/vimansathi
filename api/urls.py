@@ -33,6 +33,8 @@ urlpatterns = [
     path('viewpendingorders',views.viewliveStoreorders,name="add"),
     path('acceptorder',views.acceptorder,name="add"),
     path('showuserorder',views.userorder,name="add"),
+    path('showstoreorder',views.storeorderr,name="add"),
+
     # path('storeordeer',views.userorder,name="add"),
     path('processorder',views.storeorder,name="add"),
     

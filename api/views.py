@@ -386,6 +386,21 @@ def userorder(request):
         
     return JsonResponse({'result':list})
 
+
+def storeorderr(request):
+    userName = request.GET.get('username')
+
+    user1 = User.objects.get(username=userName)
+    print(user1)
+    o = order.objects.filter(product__user=user1)
+    
+    list = []
+
+    for a in o:
+        serial = orderSerializer(a)
+        list.append({'order':serial.data})
+        
+    return JsonResponse({'result':list})
     
     
 def hotelorder(request):

@@ -70,6 +70,14 @@ class complainSerializer(serializers.ModelSerializer):
 
 
 class transactionSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField('Complain')
+    
     class Meta:
         model = Tax
         fields = '__all__'
+
+    def Complain(self,wall): 
+         user1 = wall.user.username
+        #  print(username)
+         return user1
+    
