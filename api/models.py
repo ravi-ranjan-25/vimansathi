@@ -57,6 +57,7 @@ class userdetails(models.Model):
     airport = models.CharField(unique = False,default="NA",max_length=256)
     category = models.CharField(unique = False,default="NA",max_length=256)
     services = models.CharField(unique = False,default="NA",max_length=256)
+    dp = models.CharField(unique = False,default="NA",max_length=256)
     doctor = models.BooleanField(default=False)
     latitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)
     longitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)

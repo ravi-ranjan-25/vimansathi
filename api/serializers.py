@@ -19,6 +19,7 @@ class userdetailsSerializer(serializers.Serializer):
     objectname = serializers.CharField()
     airport = serializers.CharField()
     category = serializers.CharField()
+    dp = serializers.CharField()
     serves = catSerializer()
     active = serializers.BooleanField()
     doctor = serializers.BooleanField()

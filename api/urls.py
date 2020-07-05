@@ -67,5 +67,6 @@ urlpatterns = [
     path('delivery/scanqr',views.scanqr,name = "resolve"),
     path('delivery/deliverproduct',views.deliverproduct,name = "resolve"),
     path('delivery/info',views.showinfo,name = "resolve"),
+    path('delivery/history',views.deliveryhistory,name = "resolve"),
 
 ]

@@ -133,6 +133,18 @@ def signup(request):
         userD.save()
         return JsonResponse({'result':1,'message':'success'})
 
+def staticimg(request):
+    Username = request.GET.get('username')
+    D = request.GET.get('dp')
+
+    ud = userdetails.objects.get(user__username=Username)
+    
+    ud.dp=D
+    ud.save()
+    return JsonResponse({'result':1,'message':'success'})
+
+
+
 def login(request):
     userName = request.GET.get('username')
     Password = request.GET.get('password')
@@ -596,6 +608,15 @@ def showinfo(request):
 
 
 
+def deliveryhistory(request):
+    Username = request.GET.get('username')
+    o = order.objects.filter(delivery__username=Username)
+    list = []
+    for i in o:
+        serial = orderSerializer(i)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})
 
 
 
