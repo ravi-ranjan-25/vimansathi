@@ -34,6 +34,7 @@ urlpatterns = [
     path('acceptorder',views.acceptorder,name="add"),
     path('showuserorder',views.userorder,name="add"),
     path('showstoreorder',views.storeorderr,name="add"),
+    path('hotelcheck',views.hotelorder,name="add"),
 
     # path('storeordeer',views.userorder,name="add"),
     path('processorder',views.storeorder,name="add"),

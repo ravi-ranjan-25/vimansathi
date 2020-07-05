@@ -27,6 +27,9 @@ def signup(request):
     Object_name = request.GET.get('object_name')
     service = request.GET.get('services')
     D=request.GET.get('doctor')
+    lat = request.GET.get('latitude')
+    longi = request.GET.get('longitude')
+
 
     check = User.objects.filter(username = userName)
     checkEmail = User.objects.filter(email = eMail)
@@ -116,8 +119,13 @@ def signup(request):
         else:
             D = False
 
+        if longi is None:
+            longi = '0.0'
+        if lat in None:
+            lat = '0.0'
+
         user1 = User.objects.create_user(username = userName, email=eMail, password=Password, first_name = firstname , last_name = lastname)
-        userD = userdetails(user=user1,mobile=Mobile,resturants=False,category=Category1,airport=Airport,objectname=Object_name,serves=service,doctor=D)
+        userD = userdetails(user=user1,mobile=Mobile,resturants=False,category=Category1,airport=Airport,objectname=Object_name,serves=service,doctor=D,longitude=longi,latitude=lat)
 
         w = wallet(user=user1)
         w.save()
@@ -136,7 +144,7 @@ def login(request):
         house = userdetails.objects.get(user = user1)
         return JsonResponse({'result':1,'username':user1.username,'email':user1.email,'firstname':user1.first_name,
                                 'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,
-                                'address':house.airport,'category':house.category,'airport':house.airport})
+                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude})
     
     else:
         return JsonResponse({'result':0,'message':'Incorrect username or password'})
