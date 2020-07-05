@@ -374,7 +374,7 @@ def acceptorder(request):
     o.accept=0
     ud = userdetails.objects.get(user = o.product.user)
     if ud.category == 'HOTEL':
-    
+        print(1)
     else:
         n = storerestro(Order=o)
         n.save()
