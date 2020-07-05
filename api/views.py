@@ -336,14 +336,15 @@ def placeOrder(request):
     
     o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q)
 
+    o.save()
+    w.save()
+    w1.save()
     ud = userdetails.objects.get(user = p.user)
     if ud.category == 'HOTEL':
         n = hotel(Order=o)
         n.save()
     
-    o.save()
-    w.save()
-    w1.save()
+    
     return JsonResponse({'result':1,'message':'Success','orderid':proid})
 
 
