@@ -48,7 +48,7 @@ class orderSerializer(serializers.Serializer):
     orderid = serializers.CharField()
     accept = serializers.IntegerField()
     quantity = serializers.IntegerField()
-
+    delivery = UserSerializer()
 
 # class EventSerializer(serializers.ModelSerializer):
     

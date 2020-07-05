@@ -13,30 +13,8 @@ class cat(models.Model):
 
     def __str__(self):
         return self.name
-        
 
-class userdetails(models.Model):
-    
-    user = models.OneToOneField(User,on_delete = models.CASCADE)
-    mobile = models.CharField(unique = True,max_length=256)
-    admin = models.BooleanField(default=False)
-    objectname = models.CharField(unique = False,default="NA",max_length=256)
-    resturants = models.BooleanField(default=False)
-    airport = models.CharField(unique = False,default="NA",max_length=256)
-    category = models.CharField(unique = False,default="NA",max_length=256)
-    services = models.CharField(unique = False,default="NA",max_length=256)
-    doctor = models.BooleanField(default=False)
-    latitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)
-    longitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)
-    time = models.DateTimeField(default = timezone.now())
-    active = models.BooleanField(default=False)
-    risk = models.IntegerField(default=0,max_length=10)
-    serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
 
-    def __str__(self):
-        return self.user.username
-
-# Create your models here.
 class Product(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     productName = models.CharField(unique = False,default="NA",max_length=256)
@@ -55,6 +33,44 @@ class Product(models.Model):
         return self.productName
 
 
+class order(models.Model):
+    user = models.ForeignKey(User,on_delete = models.CASCADE,related_name='user')
+    product = models.ForeignKey(Product,on_delete = models.CASCADE)
+    amount = models.FloatField(default=0.00,max_length=256)
+    orderid=models.CharField(unique = True,default="NA",max_length=256)
+    quantity = models.IntegerField(unique=False,default=1,max_length=256)
+    accept = models.IntegerField(unique=False,default=-1,max_length=256)
+    delivery = models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='deliver',default=None)
+    time = models.DateTimeField(default = timezone.now())
+    
+    def __str__(self):
+        return self.product.productName
+
+
+class userdetails(models.Model):
+    
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
+    mobile = models.CharField(unique = True,max_length=256)
+    admin = models.BooleanField(default=False)
+    objectname = models.CharField(unique = False,default="NA",max_length=256)
+    resturants = models.BooleanField(default=False)
+    airport = models.CharField(unique = False,default="NA",max_length=256)
+    category = models.CharField(unique = False,default="NA",max_length=256)
+    services = models.CharField(unique = False,default="NA",max_length=256)
+    doctor = models.BooleanField(default=False)
+    latitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)
+    longitude = models.CharField(null=True,default="0.00",max_length=256,unique=False)
+    time = models.DateTimeField(default = timezone.now())
+    active = models.BooleanField(default=False)
+    risk = models.IntegerField(default=0,max_length=10)
+    serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
+    deli = models.BooleanField(default=False)
+    co =  models.ForeignKey(order,on_delete = models.CASCADE,null=True,default=None)
+    def __str__(self):
+        return self.user.username
+
+# Create your models here.
+
 
 class wallet(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
@@ -62,18 +78,6 @@ class wallet(models.Model):
 
     def __str__(self):
         return self.user.username
-
-class order(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
-    product = models.ForeignKey(Product,on_delete = models.CASCADE)
-    amount = models.FloatField(default=0.00,max_length=256)
-    orderid=models.CharField(unique = True,default="NA",max_length=256)
-    quantity = models.IntegerField(unique=False,default=1,max_length=256)
-    accept = models.IntegerField(unique=False,default=-1,max_length=256)
-    time = models.DateTimeField(default = timezone.now())
-    
-    def __str__(self):
-        return self.product.productName
 
 class hotel(models.Model):
     Order = models.ForeignKey(order,on_delete = models.CASCADE)

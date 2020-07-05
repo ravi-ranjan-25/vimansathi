@@ -469,6 +469,36 @@ def storeorder(request):
 
 
 
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
+###################################################################################
 
 
 
@@ -476,8 +506,93 @@ def storeorder(request):
 
 
 
+def showorderstate(Orderid):
+    o =order.objects.get(orderid=Orderid)
+    if o.accept==1 :
+        #show store details
+        serial = UserSerializer(o.product.user)
+        ud = userdetails.objects.get(user = o.product.user)
+        serialud = userdetailsSerializer(serialud)
+
+        return JsonResponse({'result':'You already have a existing delivery please complete to get more','Store Details':serial.data,'more details':serialud.data})
+
+    elif o.accept == 2:
+        os = orderSerializer(o)
+        return JsonResponse({'result':os.data})
 
 
+
+def deliverypending(request):
+    Username = request.GET.get('username')
+
+    ud = userdetails.objects.get(user__username=Username)
+    if(ud.deli == False):
+        ss = order.objects.filter(accept=1,delivery=None)
+        
+        list = []
+        for s in ss:
+            
+            ud1 = userdetails.objects.get(user=s.product.user)
+            if ud1.airport == ud.airport:
+                serial = orderSerializer(s)
+                ser = User.objects.get(username=serial.data['user']['username'])
+                serialud = userdetailsSerializer(ud1)
+                list.append({'order details':serial.data,'User details':serialud.data})
+
+        return JsonResponse({'result':list})
+    else:
+
+        return showorderstate(ud.co.orderid)
+
+
+
+def acceptdelivery(request):
+    Username = request.GET.get('username')
+    Orderid=request.GET.get('orderid')            
+
+    o = order.objects.get(orderid=Orderid)
+    o.accept = 10
+    user1 = User.objects.get(username=Username)
+
+    o.delivery = user1
+    o.save()
+
+    ud = userdetails.objects.get(user__username=Username)
+    ud.co = o
+    ud.deli=True
+    ud.save()
+    return JsonResponse({'orderid':o.orderid})
+
+def generateqr(request):
+    Orderid=request.GET.get('orderid')            
+
+
+    o = order.objects.get(orderid=orderid)
+
+    return JsonResponse({'orderid':o.orderid})
+
+def scanqr(request):
+    Orderid=request.GET.get('orderid')            
+    o = order.objects.get(orderid=Orderid)
+    o.accept = 2
+    o.save()
+    return JsonResponse({'orderid':o.orderid})
+
+def deliverproduct(request):
+    Orderid=request.GET.get('orderid')            
+    o = order.objects.get(orderid=Orderid)
+    ud = userdetails.objects.get(user=o.delivery)
+    ud.deli=False
+    ud.co=None
+    ud.save()
+    o.accept = 3
+    o.save()
+    return JsonResponse({'result':'success'})
+
+
+def showinfo(request):
+    Orderid=request.GET.get('orderid')            
+    return showorderstate(Orderid)
 
 
 

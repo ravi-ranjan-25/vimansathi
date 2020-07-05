@@ -59,4 +59,13 @@ urlpatterns = [
     path('transaction',transactionListView.as_view(),name = "transaction"),
 
 
+#################################################################################
+
+    path('delivery/live',views.deliverypending,name = "resolve"),
+    path('delivery/accept',views.acceptdelivery,name = "resolve"),
+    path('delivery/generateqr',views.generateqr,name = "resolve"),
+    path('delivery/scanqr',views.scanqr,name = "resolve"),
+    path('delivery/deliverproduct',views.deliverproduct,name = "resolve"),
+    path('delivery/info',views.showinfo,name = "resolve"),
+
 ]
