@@ -422,7 +422,7 @@ def hotelorder(request):
     checko = request.GET.get('checko')
     rating1 = request.GET.get('rating')
 
-    d = order.objects.get(orderdid=odid)
+    d = order.objects.get(orderid=odid)
     o = hotel.objects.get(Order=d)
 
     if checki is not None:
