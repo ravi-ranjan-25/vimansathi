@@ -121,7 +121,7 @@ def signup(request):
 
         if longi is None:
             longi = '0.0'
-        if lat in None:
+        if lat is None:
             lat = '0.0'
 
         user1 = User.objects.create_user(username = userName, email=eMail, password=Password, first_name = firstname , last_name = lastname)
