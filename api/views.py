@@ -336,10 +336,15 @@ def placeOrder(request):
     
     o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q)
 
+    ud = userdetails.objects.get(user = p.user)
+    if ud.category == 'HOTEL':
+        n = hotel(Order=o)
+        n.save()
+    
     o.save()
     w.save()
     w1.save()
-    return JsonResponse({'result':1,'message':'Success'})
+    return JsonResponse({'result':1,'message':'Success','orderid':proid})
 
 
 def viewliveStoreorders(request):
@@ -369,8 +374,7 @@ def acceptorder(request):
     o.accept=0
     ud = userdetails.objects.get(user = o.product.user)
     if ud.category == 'HOTEL':
-        n = hotel(Order=o)
-        n.save()
+    
     else:
         n = storerestro(Order=o)
         n.save()
