@@ -524,7 +524,7 @@ def showorderstate(Orderid):
         #show store details
         serial = UserSerializer(o.product.user)
         ud = userdetails.objects.get(user = o.product.user)
-        serialud = userdetailsSerializer(serialud)
+        serialud = userdetailsSerializer(ud)
 
         return JsonResponse({'result':'You already have a existing delivery please complete to get more','Store Details':serial.data,'more details':serialud.data})
 
