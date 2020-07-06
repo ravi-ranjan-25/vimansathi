@@ -70,4 +70,8 @@ urlpatterns = [
     path('delivery/info',views.showinfo,name = "resolve"),
     path('delivery/history',views.deliveryhistory,name = "resolve"),
 
+    ##############################################################################
+
+    
+
 ]
