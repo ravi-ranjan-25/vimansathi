@@ -526,11 +526,11 @@ def showorderstate(Orderid):
         ud = userdetails.objects.get(user = o.product.user)
         serialud = userdetailsSerializer(ud)
 
-        return JsonResponse({'result':'You already have a existing delivery please complete to get more','Store Details':serial.data,'more details':serialud.data})
+        return JsonResponse({'result':'You already have a existing delivery please complete to get more','parameter':2,'Store Details':serial.data,'more details':serialud.data})
 
     elif o.accept == 2:
         os = orderSerializer(o)
-        return JsonResponse({'result':os.data})
+        return JsonResponse({'result':os.data,'parameter':3})
 
 
 
@@ -549,7 +549,7 @@ def deliverypending(request):
                 serial = orderSerializer(s)
                 ser = User.objects.get(username=serial.data['user']['username'])
                 serialud = userdetailsSerializer(ud1)
-                list.append({'order details':serial.data,'User details':serialud.data})
+                list.append({'order details':serial.data,'User details':serialud.data,'parameter':1})
 
         return JsonResponse({'result':list})
     else:
