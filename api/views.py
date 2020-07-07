@@ -427,8 +427,9 @@ def userorder(request):
         serial = orderSerializer(a)
         ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
+        serialud = userdetailsSerializer(ud)
         
-        list.append({'order':serial.data,'store name':ud.object_name})
+        list.append({'order':serial.data,'store details':serialud.data})
         
     return JsonResponse({'result':list})
 
