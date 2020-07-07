@@ -4,16 +4,43 @@ from django.utils import timezone
 
 class airport(models.Model):
     name = models.CharField(unique=True,max_length=256)
-    city = models.CharField(unique=True,max_length=256)
-    state = models.CharField(unique=True,max_length=256)
-    latitude = models.CharField(unique=True,max_length=256)
-    longitude = models.CharField(unique=True,max_length=256)
+    city = models.CharField(unique=False,max_length=256)
+    state = models.CharField(unique=False,max_length=256)
+    latitude = models.CharField(unique=False,max_length=256)
+    longitude = models.CharField(unique=False,max_length=256)
 
 
     def __str__(self):
         return self.city
 
+class airline(models.Model):
+    name = models.CharField(unique=True,max_length=256)
+    logo = models.CharField(unique=False,max_length=256)
 
+    def __str__(self):
+        return self.name
+
+class routes(models.Model):
+    flightid = models.CharField(unique=True,max_length=256)
+    name = models.CharField(unique=False,max_length=256)
+    origin = models.CharField(unique=False,max_length=256)
+    destination = models.CharField(unique=False,max_length=256)
+    Airline = models.ForeignKey(airline,on_delete = models.CASCADE)
+    departure = models.DateTimeField()
+    arrival = models.DateTimeField()
+    seat = models.IntegerField(unique=False,default=1,max_length=256)
+
+    def __str__(self):
+        return self.name
+
+class days(models.Model):
+    date = models.DateField()
+    Route = models.ForeignKey(routes,on_delete = models.CASCADE)
+    seat = models.IntegerField(unique=False,default=1,max_length=256)
+    price = models.FloatField(max_length=256)
+
+    def __str__(self):
+        return self.name
 
 class cat(models.Model):
     name = models.CharField(unique = False,default="NA",max_length=256)
@@ -53,6 +80,7 @@ class order(models.Model):
     quantity = models.IntegerField(unique=False,default=1,max_length=256)
     accept = models.IntegerField(unique=False,default=-1,max_length=256)
     delivery = models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='deliver',default=None)
+    selfpickup = models.BooleanField(default=False) 
     time = models.DateTimeField(default = timezone.now())
     
     def __str__(self):
