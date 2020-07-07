@@ -534,7 +534,7 @@ def showorderstate(Orderid):
         ud = userdetails.objects.get(user = o.product.user)
         serialud = userdetailsSerializer(ud)
 
-        return JsonResponse({'result':'You already have a existing delivery please complete to get more','parameter':2,'Store Details':serial.data,'more details':serialud.data.'orderid':Orderid})
+        return JsonResponse({'result':'You already have a existing delivery please complete to get more','parameter':2,'Store Details':serial.data,'more details':serialud.data,'orderid':Orderid})
 
     elif o.accept == 2:
         os = orderSerializer(o)
