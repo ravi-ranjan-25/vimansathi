@@ -2,6 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+class airport(models.Model):
+    name = models.CharField(unique=True,max_length=256)
+    city = models.CharField(unique=True,max_length=256)
+    state = models.CharField(unique=True,max_length=256)
+    latitude = models.CharField(unique=True,max_length=256)
+    longitude = models.CharField(unique=True,max_length=256)
+
+
+    def __str__(self):
+        return self.city
+
+
 
 class cat(models.Model):
     name = models.CharField(unique = False,default="NA",max_length=256)
@@ -181,7 +193,9 @@ class Complain(models.Model):
 
 
 class Tax(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    user = models.ForeignKey(User,on_delete = models.CASCADE,related_name='donor')
+    # service = models.ForeignKey(User,on_delete = models.CASCADE,related_name='benificiary')
+    # Order = models.ForeignKey(order,on_delete = models.CASCADE)
     txnid = models.CharField(max_length = 256)
     amount = models.FloatField(max_length=10)
     time = models.DateTimeField(default = timezone.now())

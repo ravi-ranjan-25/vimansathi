@@ -69,7 +69,18 @@ urlpatterns = [
     path('delivery/deliverproduct',views.deliverproduct,name = "resolve"),
     path('delivery/info',views.showinfo,name = "resolve"),
     path('delivery/history',views.deliveryhistory,name = "resolve"),
-
+    
+    ##############################################################################
+    
+    
+    path('getwallet',views.getWallet,name = "resolve"),
+    
+    path('admin/addairport',views.addAirport,name = "resolve"),
+    path('admin/viewUsers',views.viewUsers,name = "resolve"),
+    path('admin/resolvecomplains',views.resolveComplain,name = "resolve"),
+    path('admin/complain',views.complainss , name = "comp"),
+    path('admin/showcomplains',complainListView.as_view(),name = "complain"),
+   
     ##############################################################################
 
     

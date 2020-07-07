@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -132,6 +132,14 @@ def signup(request):
         user1.save()
         userD.save()
         return JsonResponse({'result':1,'message':'success'})
+
+def getWallet(request):
+    Username = request.GET.get('username')
+
+    w = wallet.objects.get(user__username=Username)
+
+    return JsonResponse({'wallet':w.amount})
+
 
 def staticimg(request):
     Username = request.GET.get('username')
@@ -526,7 +534,7 @@ def showorderstate(Orderid):
         ud = userdetails.objects.get(user = o.product.user)
         serialud = userdetailsSerializer(ud)
 
-        return JsonResponse({'result':'You already have a existing delivery please complete to get more','parameter':2,'Store Details':serial.data,'more details':serialud.data})
+        return JsonResponse({'result':'You already have a existing delivery please complete to get more','parameter':2,'Store Details':serial.data,'more details':serialud.data.'orderid':Orderid})
 
     elif o.accept == 2:
         os = orderSerializer(o)
@@ -654,11 +662,42 @@ def deliveryhistory(request):
 
 
 
-# def se
+def addAirport(request):
+    Name = request.GET.get('name')
+    City = request.GET.get('city')
+    State = request.GET.get('state')
+    Latitude = request.GET.get('latitude')
+    Longitude = request.GET.get('longitude')
 
+    s = airport(name=Name.upper(),city=City.upper(),state=State.upper(),latitude=Latitude,longitude=Longitude)
+    s.save()
 
+    return JsonResponse({'result':1})
 
+def viewUsers(request):
+    Airport = request.GET.get('airport')
 
+    ud = userdetails.objects.filter(airport=Airport.upper()).exclude(category='NA')
+    store = []
+    hotel = []
+    cab = []
+    restro=[]
+
+    for u in ud:
+            if u.category == 'STORE':
+                serial = userdetailsSerializer(u)
+                store.append(serial.data)
+            elif u.category == 'HOTEL':
+                serial = userdetailsSerializer(u)
+                hotel.append(serial.data)
+            elif u.category == 'RESTAURANTS':
+                serial = userdetailsSerializer(u)
+                restro.append(serial.data)
+            elif u.category == 'CAB':
+                serial = userdetailsSerializer(u)
+                cab.append(serial.data)
+
+    return JsonResponse({'store':store,'hotel':hotel,'cab':cab,'restro':restro})
 
 
 
