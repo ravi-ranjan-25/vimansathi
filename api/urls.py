@@ -74,7 +74,6 @@ urlpatterns = [
     
     
     path('getwallet',views.getWallet,name = "resolve"),
-    
     path('admin/addairport',views.addAirport,name = "resolve"),
     path('admin/viewUsers',views.viewUsers,name = "resolve"),
     path('admin/resolvecomplains',views.resolveComplain,name = "resolve"),

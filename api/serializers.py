@@ -49,6 +49,7 @@ class orderSerializer(serializers.Serializer):
     orderid = serializers.CharField()
     accept = serializers.IntegerField()
     quantity = serializers.IntegerField()
+    selfpickup = serializers.BooleanField()
     delivery = UserSerializer()
 
 class hotelSerializer(serializers.Serializer):

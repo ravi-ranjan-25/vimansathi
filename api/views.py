@@ -342,19 +342,25 @@ def placeOrder(request):
     proid = request.GET.get('productid')
     Username = request.GET.get('username')    
     Q = request.GET.get('quantity')
+    Pickup = request.GET.get('selfpickup')
+
+    if Pickup == 'y':
+        Pickup=True
+    else:    
+        Pickup=False
 
     user1 = User.objects.get(username=Username)
     p = Product.objects.get(productid=proid)
     w = wallet.objects.get(user = user1)
     w1 = wallet.objects.get(user = p.user)
     Q = int(Q)
-
+    
     a = Q*(p.sellingPrice + p.sellingPrice*p.discount)
     w.amount = w.amount - a
     w1.amount = w1.amount + a 
     proid = "OD"+str(random.randint(999999,9999999))
     
-    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q)
+    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup)
 
     o.save()
     w.save()
@@ -499,13 +505,13 @@ def storeorder(request):
 ###################################################################################
 ###################################################################################
 ###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
-###################################################################################
+#########        ####          #####################################################
+######### ###### #### #############################################################
+######### ###### ####        ######################################################
+######### ###### #### #############################################################
+######### ###### ####        ######################################################
+######### ###### #### #############################################################
+#########        ####        ######################################################
 ###################################################################################
 ###################################################################################
 ###################################################################################
@@ -551,7 +557,7 @@ def deliverypending(request):
 
     ud = userdetails.objects.get(user__username=Username)
     if(ud.deli == False):
-        ss = order.objects.filter(accept=1,delivery=None)
+        ss = order.objects.filter(accept=1,delivery=None).exclude(selfpickup=True)
         
         list = []
         for s in ss:
@@ -563,7 +569,7 @@ def deliverypending(request):
                 serialud = userdetailsSerializer(ud1)
                 list.append({'order details':serial.data,'User details':serialud.data,'parameter':1})
 
-        return JsonResponse({'result':list,'parameter':1})
+        return JsonResponse({'result':list,'paramater':1})
     else:
 
         return showorderstate(ud.co.orderid)
