@@ -51,6 +51,11 @@ class orderSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
     delivery = UserSerializer()
 
+class hotelSerializer(serializers.Serializer):
+    checkin = serializers.CharField()
+    checkout = serializers.CharField()
+    
+
 # class EventSerializer(serializers.ModelSerializer):
     
 #     class Meta:

@@ -378,11 +378,15 @@ def viewliveStoreorders(request):
 
     for a in o:
         serial = orderSerializer(a)
-        ser = User.objects.get(username=serial.data['user']['username'])
+        ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
-       
-        list.append({'product details':serial.data,'store details':serialud.data})
+        ho = []
+        if ud.category == 'HOTEL':
+            h = hotel.objects.get(Order=a)
+            hotelserial = hotelSerializer(h)
+            ho.append({'hotel':ho})
+        list.append({'product details':serial.data,'store details':serialud.data,'hotel':ho})
                 
     return JsonResponse({'result':list})
          
