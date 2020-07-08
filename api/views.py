@@ -428,8 +428,11 @@ def userorder(request):
         ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
-        
-        list.append({'order':serial.data,'store_details':serialud.data})
+        if ud.category == 'HOTEL':
+            h = hotel.objects.get(Order=a)
+            hotelserial = hotelSerializer(h)
+            ho.append({'hotel':hotelserial.data})
+        list.append({'order':serial.data,'store_details':serialud.data,'hotel':ho})
         
     return JsonResponse({'result':list})
 
