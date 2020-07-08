@@ -55,7 +55,33 @@ class orderSerializer(serializers.Serializer):
 class hotelSerializer(serializers.Serializer):
     checkin = serializers.CharField()
     checkout = serializers.CharField()
-    
+
+class airlineSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    logo = serializers.CharField()
+
+
+class routesSerializer(serializers.Serializer):
+    flightid = serializers.CharField()
+    name = serializers.CharField()
+    origin = serializers.CharField()
+    destination = serializers.CharField()
+    Airline = airlineSerializer()
+    departure = serializers.DateTimeField()
+    arrival = serializers.DateTimeField()
+    seat = serializers.IntegerField()
+   
+
+
+class daysSerializer(serializers.Serializer):
+    date = serializers.DateField()
+    routeid = serializers.CharField()
+    Route = routesSerializer()
+    seat = serializers.IntegerField()
+    price = serializers.FloatField()
+
+
+
 
 # class EventSerializer(serializers.ModelSerializer):
     
@@ -87,4 +113,4 @@ class transactionSerializer(serializers.ModelSerializer):
          user1 = wall.user.username
         #  print(username)
          return user1
-    
+

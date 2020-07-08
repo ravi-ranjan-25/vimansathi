@@ -35,12 +35,25 @@ class routes(models.Model):
 
 class days(models.Model):
     date = models.DateField()
+    routeid = models.CharField(unique=False,default='ROUTE1',max_length=256)
     Route = models.ForeignKey(routes,on_delete = models.CASCADE)
     seat = models.IntegerField(unique=False,default=1,max_length=256)
     price = models.FloatField(max_length=256)
 
     def __str__(self):
-        return self.name
+        return self.Route.name
+
+class book(models.Model):
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    dayobject = models.ForeignKey(days,on_delete = models.CASCADE)
+    seat = models.IntegerField(unique=False,default=1,max_length=256)
+    pnr = models.CharField(unique=True,max_length=256)
+    amount = models.FloatField(max_length=256)
+    risk = models.IntegerField(unique=False,default=0,max_length=256)
+
+    def __str__(self):
+        return self.pnr
+
 
 class cat(models.Model):
     name = models.CharField(unique = False,default="NA",max_length=256)
@@ -111,6 +124,7 @@ class userdetails(models.Model):
         return self.user.username
 
 # Create your models here.
+
 
 
 class wallet(models.Model):

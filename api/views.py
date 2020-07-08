@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -7,13 +7,13 @@ from django.http import JsonResponse
 import random
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
-
-
+import datetime
+import time
 # Create your views here.
 def signup(request):
     userName = request.GET.get('username')
@@ -714,13 +714,97 @@ def viewUsers(request):
     return JsonResponse({'store':store,'hotel':hotel,'cab':cab,'restro':restro})
 
 
+def addAirline(request):
+    Name = request.GET.get('name')
+    Logo = request.GET.get('logo')
+
+    a = airline(name=Name.upper(),logo=Logo)
+    a.save()
+
+    return JsonResponse({'result':1})
+
+def addFlight(request):
+    Origin = request.GET.get('origin')
+    Destination = request.GET.get('destination')
+    AIrline = request.GET.get('airline')
+    Arrival = request.GET.get('arrival')
+    Departure = request.GET.get('departure')
+    Seat = request.GET.get('seat')
+    Name = request.GET.get('name')
 
 
+    fid = 'FL'+str(random.randint(999999,9999999))
+    Seat = int(Seat)        
+    a = airline.objects.get(name=AIrline.upper())
+    Arrival = datetime.datetime.strptime(Arrival, '%H:%M:%S')
+    # Arrival = datetime.datetime(Arrival)
+    Departure = datetime.datetime.strptime(Departure, '%H:%M:%S')
+    route = routes(flightid=fid,name=Name.upper(),origin=Origin.upper(),destination=Destination.upper(),Airline=a,departure=str(Departure),arrival=str(Arrival),seat=Seat)
+    route.save()
+    return JsonResponse({'result':1})
 
+def setFrequency(request):
+    fid = request.GET.get('flightid')
+    startDate = request.GET.get('start')
+    endDate = request.GET.get('end')
+    Price = float(request.GET.get('price'))
+    r = routes.objects.get(flightid=fid)
 
+    startDate=datetime.datetime.strptime(startDate, '%Y-%m-%d')
+    endDate=datetime.datetime.strptime(endDate, '%Y-%m-%d')
 
+    c = 0
+    
+    while startDate <= endDate:
+        ro = 'ROUTE'+str(random.randint(999999,99999999))
+        a = days(date=startDate,routeid=ro,Route=r,seat=r.seat,price=Price)
+        startDate = startDate + datetime.timedelta(days=1)
+        c += 1
+        a.save()
 
+    return JsonResponse({'flights added':c})
+            
+def findFlights(request):
+    Origin = request.GET.get('origin')
+    Destination = request.GET.get('destination')
+    D = request.GET.get('Date')
+    D=datetime.datetime.strptime(D, '%Y-%m-%d')
 
+    r = routes.objects.filter(origin=Origin.upper(),destination=Destination.upper())
+    
+    list = []
+    for i in r:
+        print(i)
+        Da = days.objects.filter(date=D,Route=i)
+        
+        
+        for da in Da:
+            serial = daysSerializer(da)
+            list.append(serial.data)
+
+    return JsonResponse({'flights_available':list})
+
+def bookFlights(request):
+    ro = request.GET.get('routeid')
+    Username = request.GET.get('username')
+    Seat = request.GET.get('seat')
+    Seat = int(Seat)
+
+    bo = 'PNR'+str(random.randint(9999,99999))
+    user1 = User.objects.get(username=Username)
+    w = wallet.objects.get(user__username=Username)
+    w1 = wallet.objects.get(user__username='admin')
+    
+    d = days.objects.get(routeid=ro)
+    w.amount = w.amount - Seat*d.price
+    w1.amount = w1.amount + Seat*d.price
+    w.save()
+    w1.save()
+
+    b = book(dayobject=d,seat=Seat,pnr=bo,amount=Seat*d.price,user=user1)
+    b.save()
+    
+    return JsonResponse({'result':1})
 
 
 

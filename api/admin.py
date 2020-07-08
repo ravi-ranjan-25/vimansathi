@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Complain,Tax,cat
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Complain,Tax,cat,airline,routes,days
 
 # Register your models here.
 
@@ -12,3 +12,6 @@ admin.site.register(Tax)
 admin.site.register(Complain)
 admin.site.register(storerestro)
 admin.site.register(cat)
+admin.site.register(airline)
+admin.site.register(routes)
+admin.site.register(days)
