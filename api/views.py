@@ -428,6 +428,7 @@ def userorder(request):
         ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
+        ho = []
         if ud.category == 'HOTEL':
             h = hotel.objects.get(Order=a)
             hotelserial = hotelSerializer(h)
