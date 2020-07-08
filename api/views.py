@@ -573,7 +573,7 @@ def deliverypending(request):
                 serialud = userdetailsSerializer(ud1)
                 list.append({'order details':serial.data,'User details':serialud.data,'parameter':1})
 
-        return JsonResponse({'result':list,'paramater':1})
+        return JsonResponse({'result':list,'parameter':1})
     else:
 
         return showorderstate(ud.co.orderid)
