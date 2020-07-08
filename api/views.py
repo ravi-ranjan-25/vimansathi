@@ -429,7 +429,7 @@ def userorder(request):
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
         
-        list.append({'order':serial.data,'store details':serialud.data})
+        list.append({'order':serial.data,'store_details':serialud.data})
         
     return JsonResponse({'result':list})
 
@@ -712,7 +712,6 @@ def viewUsers(request):
                 cab.append(serial.data)
 
     return JsonResponse({'store':store,'hotel':hotel,'cab':cab,'restro':restro})
-
 
 
 
