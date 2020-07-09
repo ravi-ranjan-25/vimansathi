@@ -56,6 +56,15 @@ class hotelSerializer(serializers.Serializer):
     checkin = serializers.CharField()
     checkout = serializers.CharField()
 
+class airportSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    city = serializers.CharField()
+    state = serializers.CharField()
+    latitude = serializers.CharField()
+    longitude = serializers.CharField()
+
+
+
 class airlineSerializer(serializers.Serializer):
     name = serializers.CharField()
     logo = serializers.CharField()

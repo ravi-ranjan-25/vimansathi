@@ -7,7 +7,7 @@ from django.http import JsonResponse
 import random
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -815,11 +815,42 @@ def bookFlights(request):
     return JsonResponse({'result':1})
 
 
-# def listAirport(request):
+def listAirport(request):
+
+    a = airport.objects.all()
+    list = []
+    for i in a:
+        serial = airportSerializer(i)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})    
+
+def listAirline(request):
+
+    a = airline.objects.all()
+    list = []
+    for i in a:
+        serial = airlineSerializer(i)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})    
 
 
+def listflight(request):
+    City = request.GET.get('city')
+    a = routes.objects.filter(origin=City.upper())
+    list = []
+    for i in a:
+        serial = routesSerializer(i)
+        list.append(serial.data)
 
+    a = routes.objects.filter(destination=City.upper())
+    list1 = []
+    for i in a:
+        serial = routesSerializer(i)
+        list1.append(serial.data)
 
+    return JsonResponse({'arrival':list,'departure':list1})    
 
 
 
