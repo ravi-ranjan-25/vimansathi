@@ -433,9 +433,9 @@ def userorder(request):
         if ud.category == 'HOTEL':
             h = hotel.objects.get(Order=a)
             hotelserial = hotelSerializer(h)
-            CheckIn = hotelserial.data['checkin']
+            checkIn = hotelserial.data['checkin']
             CheckOUT = hotelserial.data['checkout']
-        list.append({'order':serial.data,'store_details':serialud.data,'checkin':CheckIn,'checkout':CheckOUT})
+        list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
         
     return JsonResponse({'result':list})
 
