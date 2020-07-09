@@ -475,7 +475,7 @@ def hotelorder(request):
 
     if rating1 is not None:
         o.Rating = rating
-    d.save()
+    
     o.save()
     return JsonResponse({'result':1})
 
