@@ -467,11 +467,11 @@ def hotelorder(request):
 
     if checki is not None:
         o.checkin = checki
-        d.accept=2
+        # d.accept=2
 
     if checko is not None:
         o.checkout = checko
-        d.accept=3
+        # d.accept=3
 
     if rating1 is not None:
         o.Rating = rating
@@ -813,6 +813,9 @@ def bookFlights(request):
     b.save()
     
     return JsonResponse({'result':1})
+
+
+def listAirport(request):
 
 
 
