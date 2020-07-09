@@ -815,7 +815,7 @@ def bookFlights(request):
     return JsonResponse({'result':1})
 
 
-def listAirport(request):
+# def listAirport(request):
 
 
 
