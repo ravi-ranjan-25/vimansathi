@@ -451,10 +451,20 @@ def storeorderr(request):
 
     for a in o:
         serial = orderSerializer(a)
-        list.append({'order':serial.data})
+        ser = User.objects.get(username=serial.data['product']['user']['username'])
+        ud = userdetails.objects.get(user=ser)
+        serialud = userdetailsSerializer(ud)
+        checkIn = 'NA'
+        CheckOUT= 'NA'
+        if ud.category == 'HOTEL':
+            h = hotel.objects.get(Order=a)
+            hotelserial = hotelSerializer(h)
+            checkIn = hotelserial.data['checkin']
+            CheckOUT = hotelserial.data['checkout']
+        list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
         
     return JsonResponse({'result':list})
-    
+   
     
 def hotelorder(request):
     odid = request.GET.get('orderid')
@@ -1108,3 +1118,4 @@ class transactionListView(ListAPIView):
     queryset = Tax.objects.all()
     serializer_class = transactionSerializer
         
+
