@@ -15,10 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from cab import views
+from rest_framework import routers
+# from .views import complainListView,transactionListView
+
+# from .views import EventListView
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/',include('api.urls')),
-    path('cab/',include('cab.urls'))
-
+# path('/user', , name = "userConsumptionN"),
+    path('signup',views.addcab , name = "signup"),
+    path('order',views.caborder , name = "login"),
+    path('accept',views.accept , name = "login"),
+    path('scanqr',views.scanqr , name = "login"),
+    path('completeride',views.completeride , name = "login"),
+    path('showavailablerides',views.showavailablerides , name = "login"),
 ]
