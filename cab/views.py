@@ -16,7 +16,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 import datetime
 import time
-
+import s2geometry as s2
 
 def addcab(request):
     Username = request.GET.get('username')
