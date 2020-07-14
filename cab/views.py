@@ -18,9 +18,9 @@ import datetime
 import time
 # import s2geometry as s2
 def createmyuser(request):
-    u = User.objects.create_superuser('ravi2','ravi2519999@myemail.com','maverick')
+    u = User.objects.create_superuser('ravi1','ravi2514999@myemail.com','maverick')
     u.save()
-    return JsonResponse({'result':1})
+    return JsonResponse({'result':2})
 
 
 def addcab(request):
