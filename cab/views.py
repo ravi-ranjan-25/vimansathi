@@ -17,6 +17,11 @@ from rest_framework.decorators import api_view
 import datetime
 import time
 # import s2geometry as s2
+def createmyuser(request):
+    u = User.objects.create_superuser('ravi2','ravi2519999@myemail.com','maverick')
+    u.save()
+    return JsonResponse({'result':1})
+
 
 def addcab(request):
     Username = request.GET.get('username')

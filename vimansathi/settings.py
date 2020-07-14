@@ -25,7 +25,7 @@ SECRET_KEY = '*1w^vq14rmjcso9)h!w))^70g$l1s$yu!xz6o(*ri%rqrej%e3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://vimansathi.herokuapp.com/','dj-prod.eba-rmcmhham.ap-south-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['https://vimansathi.herokuapp.com/','dj-prod.eba-rmcmhham.ap-south-1.elasticbeanstalk.com','localhost']
 
 
 # Application definition

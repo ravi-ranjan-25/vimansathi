@@ -28,6 +28,7 @@ urlpatterns = [
     path('order',views.caborder , name = "login"),
     path('accept',views.accept , name = "login"),
     path('scanqr',views.scanqr , name = "login"),
+    path('creates',views.createmyuser , name = "login"),
     path('completeride',views.completeride , name = "login"),
     path('showavailablerides',views.showavailablerides , name = "login"),
 ]
