@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'api',
     'corsheaders',
     'rest_framework',
-    'cab',
-    'django_createsuperuser'
+    'cab'
+    
 
 ]
 
