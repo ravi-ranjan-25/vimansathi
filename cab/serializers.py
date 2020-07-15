@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from cab.models import carClass,cabdetails,cabOrder
 from api.serializers import UserSerializer
 
+# class kafkaSerializer:
+class kafkaSerializer(serializers.Serializer):
+    username = serializers.CharField() 
+
 class carClassSerializer(serializers.Serializer):
     cartype = serializers.CharField()
     seat = serializers.IntegerField()

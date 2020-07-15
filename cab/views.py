@@ -9,13 +9,21 @@ import random
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
 # from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer
-from .serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer
+from .serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer,kafkaSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 import datetime
 import time
+from confluent_kafka import Producer, Consumer
+import random
+import json
+import uuid
+
+
+
+
 # import s2geometry as s2
 def createmyuser(request):
     u = User.objects.create_superuser('ravi1','ravi2514999@myemail.com','maverick')
@@ -117,4 +125,96 @@ def showavailablerides(request):
         list.append({'User FirstName':serial.data['user']['first_name'],'cabid':serial.data['cabid'],'latitude':serial.data['latitudeOrigin'],'longitude':serial.data['longitudeOrigin']})
 
     return JsonResponse({'result':list})
+
+def kafkaProduce(request):
+    Username = request.GET.get('username')
+    Latitude = request.GET.get('latitude')
+    Longitude = request.GET.get('longitude')
+
+
+    producer = Producer({
+    'bootstrap.servers': 'pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092',
+    'sasl.mechanism': 'PLAIN',
+    'security.protocol': 'SASL_SSL',
+    'sasl.username': '7AQPX7D57YCZZYFV',
+    'sasl.password': '9De6dmWhaYomN26JULSABceMmAoeI6Ln5PCeQmTRYjv8SjXLwNczMVFplre3okw3'
+    })
+
+    data = {}
+    data['id'] = str(random.randint(9999,99999))
+    data['username'] = Username
+    data['latitude'] = float(Latitude)
+    data['longitude'] = float(Longitude)
+    data['key'] = str(random.randint(9999,99999))
+    
+    message = json.dumps(data)
+    future = producer.produce('cab',key=data['key'].encode('utf-8'),value=message.encode('utf-8'))
+
+    producer.flush()
+
+    return JsonResponse({'result':1})          
+
+
+def consume(request):
+    Username = request.GET.get('username')
+
+
+    c = Consumer({
+        'bootstrap.servers': 'pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092',
+        'sasl.mechanism': 'PLAIN',
+        'security.protocol': 'SASL_SSL',
+        'sasl.username': '7AQPX7D57YCZZYFV',
+        'sasl.password': '9De6dmWhaYomN26JULSABceMmAoeI6Ln5PCeQmTRYjv8SjXLwNczMVFplre3okw3',
+        'group.id': str(uuid.uuid1()),  
+        'auto.offset.reset': 'latest'
+    })
+
+    c.subscribe(['cab'])
+    list = []
+
+
+    def results(count):
+        while count:
+            msg = c.poll(0.1)
+            
+            if msg is None:
+                continue
+            if msg.error():
+                continue
+        
+            m = msg.value().decode('ascii')
+            
+            z = json.loads(m)
+            if z['username'] == Username:
+                list.append(z)
+                count -= 1
+            
+
+    results(1)
+    return JsonResponse({'result':list})          
+    # def events():
+    #     try:
+    #         while True:
+    #             msg = c.poll(0.1)  # Wait for message or event/error
+    #             if msg is None:
+    #                 # No message available within timeout.
+    #                 # Initial message consumption may take up to `session.timeout.ms` for
+    #                 #   the group to rebalance and start consuming.
+    #                 continue
+    #             if msg.error():
+    #                 # Errors are typically temporary, print error and continue.
+    #                 print("Consumer error: {}".format(msg.error()))
+    #                 continue
+    #             m = msg.value()    
+    #             yield msg.value()
+
+    #         return Response({'result':events},mimetype)
+            
+        
+    # except KeyboardInterrupt:
+    #     pass
+
+    # finally:
+    #     # Leave group and commit final offsets
+    #     c.close()
 

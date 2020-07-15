@@ -31,4 +31,6 @@ urlpatterns = [
     path('creates',views.createmyuser , name = "login"),
     path('completeride',views.completeride , name = "login"),
     path('showavailablerides',views.showavailablerides , name = "login"),
+    path('consume',views.consume , name = "login"),
+    path('produce',views.kafkaProduce , name = "login"),
 ]
