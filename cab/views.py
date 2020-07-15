@@ -166,7 +166,7 @@ def consume(request):
         'sasl.username': '7AQPX7D57YCZZYFV',
         'sasl.password': '9De6dmWhaYomN26JULSABceMmAoeI6Ln5PCeQmTRYjv8SjXLwNczMVFplre3okw3',
         'group.id': str(uuid.uuid1()),  
-        'auto.offset.reset': 'latest'
+        'auto.offset.reset': 'earliest'
     })
 
     c.subscribe(['cab'])
