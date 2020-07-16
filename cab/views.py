@@ -79,7 +79,15 @@ def caborder(request):
 
     c.save()
 
-    return JsonResponse({'result':1})
+    return JsonResponse({'cab':cid})
+
+def cabidorder(request):
+    cid = request.GET.get('cabid')
+    co = cabOrder.objects.get(cabid=cid)
+
+    serial = cabOrderSerializer(co)
+
+    return JsonResponse({'result':serial.data})
 
 def accept(request):
     cid = request.GET.get('cabid')
@@ -166,7 +174,7 @@ def consume(request):
         'sasl.username': '7AQPX7D57YCZZYFV',
         'sasl.password': '9De6dmWhaYomN26JULSABceMmAoeI6Ln5PCeQmTRYjv8SjXLwNczMVFplre3okw3',
         'group.id': str(uuid.uuid1()),  
-        'auto.offset.reset': 'earliest'
+        'auto.offset.reset': 'latest'
     })
 
     c.subscribe(['cab'])
