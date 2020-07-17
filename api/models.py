@@ -79,7 +79,8 @@ class Product(models.Model):
     sellingPrice = models.FloatField(default=0.00,max_length=256)
     discount = models.FloatField(default=0.00,max_length=256)
     category = models.ForeignKey(cat,on_delete = models.CASCADE)
-
+    total = models.IntegerField(default=1,max_length=256)
+    rating = models.FloatField(default=1,max_length=256)
 
     def __str__(self):
         return self.productName
@@ -120,6 +121,10 @@ class userdetails(models.Model):
     serves = models.ForeignKey(cat,on_delete = models.CASCADE,null=True)
     deli = models.BooleanField(default=False)
     co =  models.ForeignKey(order,on_delete = models.CASCADE,null=True,default=None)
+    total = models.IntegerField(default=1,max_length=256)
+    rating = models.FloatField(default=1,max_length=256)
+
+
     def __str__(self):
         return self.user.username
 
@@ -235,10 +240,10 @@ class Complain(models.Model):
 
 
 class Tax(models.Model):
-    user = models.ForeignKey(User,on_delete = models.CASCADE,related_name='donor')
-    # service = models.ForeignKey(User,on_delete = models.CASCADE,related_name='benificiary')
-    # Order = models.ForeignKey(order,on_delete = models.CASCADE)
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    Order = models.ForeignKey(order,on_delete = models.CASCADE,null=True)
     txnid = models.CharField(max_length = 256)
+    credit = models.BooleanField(default=False)
     amount = models.FloatField(max_length=10)
     time = models.DateTimeField(default = timezone.now())
 

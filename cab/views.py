@@ -1,5 +1,5 @@
 from django.shortcuts import render
-# from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
 from cab.models import carClass,cabdetails,cabOrder
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -51,6 +51,12 @@ def addcab(request):
 
     return JsonResponse({'result':1})
 
+def gettxnid():
+    txnid1 = random.randint(100,999) + random.randint(9999,10000) 
+
+    txn = "TXN15"+str(txnid1)
+    
+    return txn
 
 def caborder(request):
     Username = request.GET.get('username')
@@ -74,10 +80,28 @@ def caborder(request):
     
 
     user1 = User.objects.get(username=Username)
+    user2 = User.objects.get(username='admin')
     cid = 'CAB'+str(random.randint(9999,99999))    
     c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price)
 
     c.save()
+
+    w1 = wallet.objects.get(user = user1)
+    w2 = wallet.objects.get(user__username = 'admin')
+
+    w1.amount = w1.amount - 0.2*float(c.price) + float(c.price)
+    w2.amount = w2.amount + 0.2*float(c.price)
+
+    txn = gettxnid()
+    
+    t = Tax(user = user1,Order=None,txnid=txn,credit=True,amount=float(c.price))
+    t.save()
+
+    txn = gettxnid()
+    
+    t = Tax(user = user2,Order=None,txnid=txn,credit=True,amount=0.2*float(c.price))
+    t.save()
+
 
     return JsonResponse({'cab':cid})
 
@@ -109,6 +133,9 @@ def scanqr(request):
     co = cabOrder.objects.get(cabid=cid)
     co.accept=1
     co.save()
+    
+    
+    
     serial = cabOrderSerializer(co)
     return JsonResponse({'details':serial.data})
 
@@ -117,7 +144,18 @@ def completeride(request):
     
     co = cabOrder.objects.get(cabid=cid)
     co.accept=2
+    co.cab.totalRides += 1
+    co.cab.save()
     co.save()
+
+    w = wallet.objects.get(user=co.cab.user)
+    w.amount = w.amount + 0.8*co.price
+    w.save()
+    txn = gettxnid()
+    
+    t = Tax(user = co.cab.user,Order=None,txnid=txn,credit=True,amount=0.8*co.price)
+    t.save()
+
     return JsonResponse({'result':1})
 
 def showavailablerides(request):
@@ -133,6 +171,19 @@ def showavailablerides(request):
         list.append({'User FirstName':serial.data['user']['first_name'],'cabid':serial.data['cabid'],'latitude':serial.data['latitudeOrigin'],'longitude':serial.data['longitudeOrigin']})
 
     return JsonResponse({'result':list})
+
+def addRating(request):
+    cid = request.GET.get('cabid')
+    Rating = float(request.GET.get('rating'))
+    
+    co = cabOrder.objects.get(cabid=cid)
+    
+    co.rating = Rating
+    co.cab.rating = ((co.cab.totalRides * co.cab.rating) + Rating)/co.cab.totalRides
+    co.save()
+
+    return JsonResponse({'result':co.cab.rating})
+
 
 def kafkaProduce(request):
     Username = request.GET.get('username')

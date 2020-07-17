@@ -29,8 +29,11 @@ urlpatterns = [
     path('accept',views.accept , name = "login"),
     path('scanqr',views.scanqr , name = "login"),
     path('creates',views.createmyuser , name = "login"),
+    path('bookedcab',views.cabidorder , name = "login"),
     path('completeride',views.completeride , name = "login"),
     path('showavailablerides',views.showavailablerides , name = "login"),
     path('consume',views.consume , name = "login"),
     path('produce',views.kafkaProduce , name = "login"),
+    path('addrating',views.addRating , name = "login"),
+   
 ]

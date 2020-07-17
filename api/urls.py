@@ -91,6 +91,8 @@ urlpatterns = [
     path('findFlights',views.findFlights,name = "resolve"),
     path('bookFlights',views.bookFlights,name = "resolve"),
 
-    
+    #####################################################################
+    path('addstorerating',views.updatestoreRating,name = "resolve"),
+
 
 ]

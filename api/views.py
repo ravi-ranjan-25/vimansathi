@@ -337,6 +337,12 @@ def viewProduct(request):
          
     return JsonResponse({'result':1,'Product':list})
  
+def gettxnid():
+    txnid1 = random.randint(100,999) + random.randint(9999,10000) 
+
+    txn = "TXN15"+str(txnid1)
+    
+    return txn
 
 def placeOrder(request):
     proid = request.GET.get('productid')
@@ -350,21 +356,49 @@ def placeOrder(request):
         Pickup=False
 
     user1 = User.objects.get(username=Username)
+    user2 = User.objects.get(username='admin')
     p = Product.objects.get(productid=proid)
     w = wallet.objects.get(user = user1)
     w1 = wallet.objects.get(user = p.user)
+    w3 = wallet.objects.get(user__username = 'admin')
     Q = int(Q)
     
-    a = Q*(p.sellingPrice + p.sellingPrice*p.discount)
-    w.amount = w.amount - a
-    w1.amount = w1.amount + a 
+    
+    a = Q*(p.sellingPrice - p.sellingPrice*p.discount)
+    if Pickup is False:
+        aa = 0.25*a + a
+    else:
+        aa = 0.2*a + a        
+
     proid = "OD"+str(random.randint(999999,9999999))
     
-    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup)
+    w.amount = w.amount - a
+    w1.amount = w1.amount - aa
+    w3.amount = w3.amount + 0.2*a
 
+
+    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup)
     o.save()
     w.save()
     w1.save()
+    w3.save()
+
+    txn = gettxnid()
+    
+    t = Tax(user = user1,Order=o,txnid=txn,credit=False,amount=a)
+    t.save()
+
+    txn = gettxnid()
+
+    t = Tax(user = p.user,Order=o,txnid=txn,credit=True,amount=aa)
+    t.save()
+
+
+    txn = gettxnid()
+
+    t = Tax(user = user2,Order=o,txnid=txn,credit=True,amount=a*0.2)
+    t.save()
+
     ud = userdetails.objects.get(user = p.user)
     if ud.category == 'HOTEL':
         n = hotel(Order=o)
@@ -519,7 +553,91 @@ def storeorder(request):
     o.save()    
     return JsonResponse({'result':1,'status':d.accept})
 
+def updatestoreRating(request):
+    odid = request.GET.get('orderid')
+    rating1 = float(request.GET.get('productrating'))
+    rating2 = float(request.GET.get('storerating'))
+    rating3 = request.GET.get('deliveryrating')
 
+    d = order.objects.get(orderid=odid)
+
+    o = storerestro.objects.get(Order=d)
+
+    
+    o.Rating = rating1
+
+    if rating3 is not None:
+        rating3 = float(rating3)
+
+
+        ud = userdetails.objects.get(user=d.delivery)
+        ud.total += 1
+        ud.rating = ((ud.rating * ud.total) + rating3)/ud.total
+        ud.save()
+
+    ud = userdetails.objects.get(user=d.product.user)
+    ud.total += 1
+    
+    ud.rating = ((ud.rating * ud.total) + rating2)/ud.total
+    ud.save()
+
+    d.product.total += 1
+    d.product.rating = ((d.product.rating * d.product.total) + rating1)/d.product.total
+
+
+    
+    d.save() 
+    o.save()   
+    return JsonResponse({'result':1,'status':d.accept})
+
+ 
+
+def paytmCall(request):
+        username1 = request.GET.get('username')
+        am = request.GET.get('TXN_AMOUNT')
+
+        w = wallet.objects.get(user__username=username1)
+        w.amount = w.amount + float(am)
+        
+        txnid1 = random.randint(100,999) + random.randint(9999,10000) + user1.pk
+
+        txn = "TXN25"+str(complaint)
+        
+        t = Tax(user = user1,Order=None,txnid=txnid1,credit=True,amount=float(am))
+        t.save()
+
+        return JsonResponse({'result':1})
+
+
+
+class transactionListView(ListAPIView):
+    queryset = Tax.objects.all()
+    serializer_class = transactionSerializer
+        
+
+
+
+def hotelRating(request):
+    odid = request.GET.get('orderid')
+    rating1 = float(request.GET.get('roomrating'))
+    rating2 = float(request.GET.get('hotelrating'))
+    
+
+    
+    d = order.objects.get(orderid=odid)
+    o = hotel.objects.get(Order=d)
+
+    o.Rating = rating1
+
+    d.product.total += 1
+    d.product.rating = ((d.product.rating * d.product.total) + rating1)/d.product.total
+
+    ud = userdetails.objects.get(user=d.product.user)
+    ud.total += 1
+    ud.rating = ((ud.rating * ud.total) + rating2)/ud.total
+    ud.save()
+    d.save()
+    return JsonResponse({'result':1,'status':d.accept})
 
 ###################################################################################
 ###################################################################################
@@ -636,9 +754,16 @@ def deliverproduct(request):
     ud = userdetails.objects.get(user=o.delivery)
     ud.deli=False
     ud.co=None
+    
     ud.save()
     o.accept = 3
     o.save()
+   
+    txn = gettxnid()
+    
+    t = Tax(user = o.delivery,Order=o,txnid=txn,credit=True,amount=o.amount*0.05)
+    t.save()
+
     return JsonResponse({'result':'success'})
 
 
@@ -1089,35 +1214,6 @@ def resolveComplain(request):
     comp.save()
     return JsonResponse({'result':1})  
 
-def paytmCall(request):
-        username1 = request.GET.get('username')
-        am = request.GET.get('TXN_AMOUNT')
-
-        user1 = User.objects.get(username = username1)
-        user2 = User.objects.get(username = 'admin')
-        
-        # print(user2)
-        complaint = random.randint(100,999) + random.randint(9999,10000) + user1.pk
-    
-        txn = "TXN25"+str(complaint)
-        wall = wallet.objects.get(user=user2)
-        # wall1 = wallet.objects.get(user=user1)
-        
-        transaction = Tax(amount = am, txnid = txn)
-        transaction.user = user1
-        # wall1.amount=0
-        wall.amount = wall.amount + float(am)
-        wall.save()
-        # wall1.save()
-        transaction.save()
-        return JsonResponse({'result':1})
-
-
-
-class transactionListView(ListAPIView):
-    queryset = Tax.objects.all()
-    serializer_class = transactionSerializer
-        
 
 
 

@@ -89,6 +89,13 @@ class daysSerializer(serializers.Serializer):
     seat = serializers.IntegerField()
     price = serializers.FloatField()
 
+class transactionSerializer(serializers.Serializer):
+    user = UserSerializer()
+    Order = orderSerializer()
+    txnid = serializers.CharField()
+    credit = serializers.BooleanField()
+    amount = serializers.FloatField()
+    time = serializers.DateTimeField()
 
 
 
