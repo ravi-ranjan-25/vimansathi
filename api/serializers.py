@@ -27,7 +27,8 @@ class userdetailsSerializer(serializers.Serializer):
     longitude = serializers.CharField()
     active = serializers.BooleanField()
     risk = serializers.IntegerField()
-
+    total = serializers.IntegerField()
+    rating = serializers.FloatField()
 
 class ProductSerializer(serializers.Serializer):
     user = UserSerializer()
@@ -41,6 +42,8 @@ class ProductSerializer(serializers.Serializer):
     sellingPrice = serializers.FloatField()
     discount = serializers.FloatField()
     category = catSerializer()
+    total = serializers.IntegerField()
+    rating = serializers.FloatField()
 
 class orderSerializer(serializers.Serializer):
     user = UserSerializer()
@@ -55,6 +58,7 @@ class orderSerializer(serializers.Serializer):
 class hotelSerializer(serializers.Serializer):
     checkin = serializers.CharField()
     checkout = serializers.CharField()
+    Rating = serializers.FloatField()
 
 class airportSerializer(serializers.Serializer):
     name = serializers.CharField()

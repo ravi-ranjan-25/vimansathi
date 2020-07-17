@@ -7,7 +7,7 @@ from django.http import JsonResponse
 import random
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -638,6 +638,18 @@ def hotelRating(request):
     ud.save()
     d.save()
     return JsonResponse({'result':1,'status':d.accept})
+
+def showtrans(request):
+    Username = request.objects.get('username')
+
+    t = Tax.objects.filter(user__username=Username)
+    list = []
+    for i in t:
+        serial = transactionSerializer(i)
+        list.append({'data':serial.data})
+
+    return JsonResponse({'result':list})
+
 
 ###################################################################################
 ###################################################################################

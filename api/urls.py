@@ -93,6 +93,7 @@ urlpatterns = [
 
     #####################################################################
     path('addstorerating',views.updatestoreRating,name = "resolve"),
+    path('addhotelrating',views.hotelRating,name = "resolve"),
 
 
 ]
