@@ -234,7 +234,7 @@ def consume(request):
 
     def results(count):
         while count:
-            msg = c.poll(0.1)
+            msg = c.poll(0.2)
             
             if msg is None:
                 continue
