@@ -58,6 +58,7 @@ urlpatterns = [
     path('donate',views.paytmCall,name = "paytmcall"),
     # path('software/paytmcall',views.paytmCall,name = "paytmcall"),
     path('transaction',transactionListView.as_view(),name = "transaction"),
+    path('showtransaction',views.showtrans,name = "transaction"),
 
 
 #################################################################################

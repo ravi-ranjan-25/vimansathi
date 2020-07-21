@@ -640,7 +640,7 @@ def hotelRating(request):
     return JsonResponse({'result':1,'status':d.accept})
 
 def showtrans(request):
-    Username = request.objects.get('username')
+    Username = request.GET.get('username')
 
     t = Tax.objects.filter(user__username=Username)
     list = []
