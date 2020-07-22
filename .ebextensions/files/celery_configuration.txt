@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
  
 # Get django environment variables
-celeryenv=`cat /usr/bin/env | tr '\n' ',' | sed 's/export //g' | sed 's/$PATH/%(ENV_PATH)s/g' | sed 's/$PYTHONPATH//g' | sed 's/$LD_LIBRARY_PATH//g'`
+celeryenv=`cat /opt/elasticbeanstalk/deployment/env | tr '\n' ',' | sed 's/export //g' | sed 's/$PATH/%(ENV_PATH)s/g' | sed 's/$PYTHONPATH//g' | sed 's/$LD_LIBRARY_PATH//g'`
 celeryenv=${celeryenv%?}
  
 # Create celery configuraiton script
