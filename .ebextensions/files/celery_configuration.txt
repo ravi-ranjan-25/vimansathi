@@ -50,5 +50,5 @@ sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf reread
 # Update supervisord in cache without restarting all services
 sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf update
  
-# Start/Restart celeryd through supervisord
-sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
+# # Start/Restart celeryd through supervisord
+# sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
