@@ -45,10 +45,10 @@ if ! grep -Fxq "[include]" /etc/supervisord.conf
 fi
  
 # Reread the supervisord config
-/usr/local/bin/supervisorctl -c /etc/supervisord.conf reread
+sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf reread
  
 # Update supervisord in cache without restarting all services
-/usr/local/bin/supervisorctl -c /etc/supervisord.conf update
+sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf update
  
 # Start/Restart celeryd through supervisord
-/usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
+sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
