@@ -36,6 +36,7 @@ class cabOrder(models.Model):
     price=models.FloatField(default=0,max_length=256)
     accept = models.IntegerField(default=-1,max_length=256)
     time = models.DateTimeField(default = timezone.now())
+    pickupTime = models.DateTimeField(default = timezone.now())
     rating = models.FloatField(default=0,max_length=10)
 
 

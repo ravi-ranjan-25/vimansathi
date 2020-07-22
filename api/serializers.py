@@ -93,6 +93,15 @@ class daysSerializer(serializers.Serializer):
     seat = serializers.IntegerField()
     price = serializers.FloatField()
 
+class bookSerializer(serializers.Serializer):
+    user = UserSerializer()
+    dayobject = daysSerializer()
+    seat = serializers.IntegerField()
+    pnr = serializers.CharField()
+    amount = serializers.FloatField()
+    risk = serializers.IntegerField()
+
+
 class transactionSerializer(serializers.Serializer):
     user = UserSerializer()
     Order = orderSerializer()

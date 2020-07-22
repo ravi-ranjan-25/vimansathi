@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'api',
     'corsheaders',
     'rest_framework',
-    'cab'
+    'cab',
+    'django_celery_results'
     
 
 ]
@@ -57,6 +58,27 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'vimansathi.urls'
+
+aws_access_key = "AKIAWASGOC3PPEWLU6HB"
+aws_secret_key = "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"
+
+
+BROKER_URL = "sqs://%s:%s@" % (aws_access_key, aws_secret_key)
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_DEFAULT_QUEUE = 'viman-queue'
+CELERY_RESULT_BACKEND = None # Disabling the results backend
+
+
+
+BROKER_TRANSPORT_OPTIONS = {
+    'region': 'ap-south-1',
+    'polling_interval': 20,
+}
+
+
+
 
 TEMPLATES = [
     {

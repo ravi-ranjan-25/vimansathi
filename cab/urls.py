@@ -35,5 +35,8 @@ urlpatterns = [
     path('consume',views.consume , name = "login"),
     path('produce',views.kafkaProduce , name = "login"),
     path('addrating',views.addRating , name = "login"),
+    path('cabsuggestions',views.masterfunc , name = "login"),
+    path('synctime',views.changepickuptime , name = "login"),
+    path('syncdelivery',views.addCab , name = "login"),
    
 ]

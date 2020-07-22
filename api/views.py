@@ -349,11 +349,18 @@ def placeOrder(request):
     Username = request.GET.get('username')    
     Q = request.GET.get('quantity')
     Pickup = request.GET.get('selfpickup')
+    Date = request.GET.get('date')
+    
+    if Date is None:
+        Date = timezone.now()
+    else:
+        Date = datetime.datetime.strptime(startDate, '%Y-%m-%d')    
 
     if Pickup == 'y':
         Pickup=True
     else:    
         Pickup=False
+
 
     user1 = User.objects.get(username=Username)
     user2 = User.objects.get(username='admin')
@@ -377,7 +384,7 @@ def placeOrder(request):
     w3.amount = w3.amount + 0.2*a
 
 
-    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup)
+    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
     o.save()
     w.save()
     w1.save()

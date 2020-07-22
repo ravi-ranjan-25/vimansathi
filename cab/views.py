@@ -6,9 +6,9 @@ from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.http import JsonResponse
 import random
-# from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
+# from .serializers import ,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
-# from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer
+from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer
 from .serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer,kafkaSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -277,3 +277,121 @@ def consume(request):
     #     # Leave group and commit final offsets
     #     c.close()
 
+def activeFlightordersByCity(user1,Airport,Date):
+    
+    getBooking = book.objects.filter(user__username=user1,dayobject__date=Date,dayobject__Route__destination=Airport.upper())
+    print(Date)
+    list = []
+    for i in getBooking:
+        serial = bookSerializer(i)
+        list.append(serial.data)
+
+    # return JsonResponse({'flight':list})
+    
+    return list    
+
+
+def storerestroordersbycity(user1,code,Date):
+  
+    list = []
+    
+    o = order.objects.filter(user__username=user1,pickupDate__day=Date.day,pickupDate__month=Date.month,pickupDate__year=Date.year).exclude(accept=3)
+    
+    for i in o:
+        ud = userdetails.objects.get(user=i.product.user)
+        if ud.airport == code.upper():
+            if ud.category == 'STORE' or ud.category=='RESTUARANTS':
+                serial = orderSerializer(i)
+                list.append(serial.data)
+            
+
+    # return JsonResponse({'storerestro':list})
+    # print(list)
+    return list    
+
+
+def droploactionsuggestion(user1,code,Date):
+  
+    list = []
+    o = order.objects.filter(user__username=user1,pickupDate__day=Date.day,pickupDate__month=Date.month,pickupDate__year=Date.year)
+    
+    for i in o:
+        ud = userdetails.objects.get(user=i.product.user)
+        if ud.airport == code.upper():
+            if ud.category == 'HOTEL':
+                serial = orderSerializer(i)
+                serialud = userdetailsSerializer(ud)
+
+                list.append({'hotel order':serial.data,'details':serialud.data})
+            
+
+    return list    
+
+def masterfunc(request):
+    Username = request.GET.get('username')
+    Airport = request.GET.get('airport')
+    Date = request.GET.get('date')
+
+    list1 = activeFlightordersByCity(Username,Airport,Date)    
+
+    Date=datetime.datetime.strptime(Date, '%Y-%m-%d')
+
+    Date = Date.date()
+
+    
+    list2 = storerestroordersbycity(Username,Airport,Date)
+
+    list3 = droploactionsuggestion(Username,Airport,Date)
+
+    return JsonResponse({'Sync Time':list1,'Sync delivery':list2,'Sync drop location':list3})
+
+def changepickuptime(request):
+    cid = request.GET.get('cabid')
+    c = cabOrder.objects.get(cabid=cid)
+    o = request.GET.get('pnr')
+    pickLater = request.GET.get('picklater')
+   
+    if pickLater is None:
+        
+        od = book.objects.get(pnr=o)
+        Date = od.dayobject.date
+        Time = od.dayobject.Route.arrival
+        nt = datetime.datetime.combine(Date,Time.time())
+
+
+        c.pickupTime = nt
+        c.save()
+
+    return JsonResponse({'result':1})
+
+
+def addCab(request):
+    cid = request.GET.get('cabid')
+    o = request.GET.get('orderid')
+
+
+    c = cabOrder.objects.get(cabid=cid)
+    od = order.objects.get(orderid=o)
+    od.selfpickup = False
+
+    od.cab = c
+
+    od.save()
+
+    return JsonResponse({'result':1})
+
+
+def adddropLocation(request):
+    cid = request.GET.get('cabid')
+    o = request.GET.get('orderid')
+
+
+    c = cabOrder.objects.get(cabid=cid)
+    od = order.objects.get(orderid=o)
+    ud = userdetails.objects.get(user=od.user)
+    c.latitudeDestination = ud.latitude
+    c.longitudeDestination = ud.longitude
+
+    c.save()
+
+    return JsonResponse({'result':1})

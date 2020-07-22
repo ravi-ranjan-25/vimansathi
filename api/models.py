@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from cab.models import cabOrder
 
 class airport(models.Model):
     name = models.CharField(unique=True,max_length=256)
@@ -94,9 +95,11 @@ class order(models.Model):
     quantity = models.IntegerField(unique=False,default=1,max_length=256)
     accept = models.IntegerField(unique=False,default=-1,max_length=256)
     delivery = models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='deliver',default=None)
-    selfpickup = models.BooleanField(default=False) 
+    selfpickup = models.BooleanField(default=True) 
+    cab = models.ForeignKey(cabOrder,on_delete=models.CASCADE,null=True,default=None)
     time = models.DateTimeField(default = timezone.now())
-    
+    pickupDate = models.DateTimeField(default = timezone.now())
+
     def __str__(self):
         return self.product.productName
 
