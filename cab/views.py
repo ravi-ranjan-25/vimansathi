@@ -69,8 +69,12 @@ def caborder(request):
     Seat = request.GET.get('seat')
     Price = request.GET.get('price')
     Type = int(request.GET.get('type'))
-
+    pl = request.GET.get('picklater')
     
+    if pl is not None:
+        pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S')
+    else:
+        pl = timezone.now()
 
     typeArr = ['SEDAN','AUTO','BIKE','MINI']
 
@@ -82,7 +86,7 @@ def caborder(request):
     user1 = User.objects.get(username=Username)
     user2 = User.objects.get(username='admin')
     cid = 'CAB'+str(random.randint(9999,99999))    
-    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price)
+    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl)
 
     c.save()
 

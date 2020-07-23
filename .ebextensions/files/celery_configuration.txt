@@ -7,9 +7,9 @@ celeryenv=${celeryenv%?}
 # Create celery configuraiton script
 celeryconf="[program:celeryd-worker]
 ; Set full path to celery program if using virtualenv
-command=/var/app/venv/staging-LQM1lest/bin worker -A PROJECT_NAME -P solo --loglevel=INFO -n worker.%%h
+command=/var/app/venv/staging-LQM1lest/bin/celery worker -A vimansathi -P solo --loglevel=INFO -n worker.%%h
  
-directory=/var/app/current/vimansathi
+directory=/var/app/current
 user=nobody
 numprocs=1
 stdout_logfile=/var/log/worker.log
@@ -51,4 +51,4 @@ sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf reread
 sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf update
  
 # # Start/Restart celeryd through supervisord
-# sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
+sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker

@@ -5,9 +5,12 @@ from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.http import JsonResponse
 import random
+from cab.models import cabOrder
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer
+from cab.serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer,kafkaSerializer
+
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer,bookSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -477,8 +480,26 @@ def userorder(request):
             checkIn = hotelserial.data['checkin']
             CheckOUT = hotelserial.data['checkout']
         list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
-        
-    return JsonResponse({'result':list})
+
+    list2 = []
+
+    cb = cabOrder.objects.filter(user=user1)
+
+    for c in cb:
+        serial = cabOrderSerializer(c)
+        list2.append(serial.data)
+
+
+    list3 = []
+
+    bk = book.objects.filter(user=user1)
+
+    for f in bk:
+        serial = bookSerializer(f)
+        list3.append(serial.data)
+
+
+    return JsonResponse({'result':list,'cab':list2,'flight':list3})
 
 
 def storeorderr(request):

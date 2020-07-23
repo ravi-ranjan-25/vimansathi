@@ -43,7 +43,7 @@ psycopg2==2.8.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
-pycurl==7.43.0.5
+pycurl==7.43.0.5 --global-option="--with-nss
 PyDispatcher==2.0.5
 PyHamcrest==2.0.2
 pyOpenSSL==19.1.0
