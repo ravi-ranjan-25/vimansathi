@@ -357,7 +357,7 @@ def placeOrder(request):
     if Date is None:
         Date = timezone.now()
     else:
-        Date = datetime.datetime.strptime(startDate, '%Y-%m-%d')    
+        Date = datetime.datetime.strptime(Date, '%Y-%m-%d')    
 
     if Pickup == 'y':
         Pickup=True

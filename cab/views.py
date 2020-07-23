@@ -283,7 +283,9 @@ def consume(request):
 
 def activeFlightordersByCity(user1,Airport,Date):
     
-    getBooking = book.objects.filter(user__username=user1,dayobject__date=Date,dayobject__Route__destination=Airport.upper())
+    a = airport.objects.get(name=Airport.upper())
+
+    getBooking = book.objects.filter(user__username=user1,dayobject__date=Date,dayobject__Route__destination=a.city)
     print(Date)
     list = []
     for i in getBooking:
@@ -317,14 +319,17 @@ def storerestroordersbycity(user1,code,Date):
 def droploactionsuggestion(user1,code,Date):
   
     list = []
-    o = order.objects.filter(user__username=user1,pickupDate__day=Date.day,pickupDate__month=Date.month,pickupDate__year=Date.year)
+    o = order.objects.filter(user__username=user1)
     
     for i in o:
         ud = userdetails.objects.get(user=i.product.user)
         if ud.airport == code.upper():
             if ud.category == 'HOTEL':
-                serial = orderSerializer(i)
-                serialud = userdetailsSerializer(ud)
+                ho = hotel.objects.get(Order=i)
+                Date1=datetime.datetime.strptime(ho.checkin, '%Y-%m-%d %H:%M:%S')
+                if Date.day == Date1.day and Date.month == Date1.month and Date.year == Date1.year:
+                    serial = orderSerializer(i)
+                    serialud = userdetailsSerializer(ud)
 
                 list.append({'hotel order':serial.data,'details':serialud.data})
             
