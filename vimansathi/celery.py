@@ -8,6 +8,8 @@ from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vimansathi.settings')
 app = Celery('vimansathi')
+app.conf.broker_url = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379'
+app.conf.result_backend = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379/0'
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks()
 app.conf.beat_schedule = {
@@ -16,6 +18,7 @@ app.conf.beat_schedule = {
         'schedule': 10.0
     },
 }
+
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
