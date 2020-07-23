@@ -17,6 +17,7 @@ class cabdetails(models.Model):
     rating = models.FloatField(default=1,max_length=4)
     totalRides = models.IntegerField(default=0,max_length=10)
     rating = models.FloatField(default=1,max_length=10)
+    
 
     def __str__(self):
         return self.user.username    

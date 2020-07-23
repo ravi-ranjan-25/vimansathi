@@ -89,6 +89,7 @@ urlpatterns = [
     path('admin/listAirline',views.listAirline,name = "resolve"),
     path('admin/listairport',views.listAirport,name = "resolve"),
     path('admin/listflight',views.listflight,name = "resolve"),
+    path('admin/godseye',views.godseye,name = "resolve"),
     path('findFlights',views.findFlights,name = "resolve"),
     path('bookFlights',views.bookFlights,name = "resolve"),
 

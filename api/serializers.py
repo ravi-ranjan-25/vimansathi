@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from api.models import Product,order,userdetails,Complain,Tax,cat
+from cab.serializers import cabOrderSerializer
 
 class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField()
@@ -11,24 +12,6 @@ class UserSerializer(serializers.Serializer):
 class catSerializer(serializers.Serializer):
     name = serializers.CharField()
     airport = serializers.CharField()
-
-class userdetailsSerializer(serializers.Serializer):
-    user = UserSerializer()
-    mobile = serializers.CharField()
-    admin = serializers.BooleanField()
-    objectname = serializers.CharField()
-    airport = serializers.CharField()
-    category = serializers.CharField()
-    dp = serializers.CharField()
-    serves = catSerializer()
-    active = serializers.BooleanField()
-    doctor = serializers.BooleanField()
-    latitude = serializers.CharField()
-    longitude = serializers.CharField()
-    active = serializers.BooleanField()
-    risk = serializers.IntegerField()
-    total = serializers.IntegerField()
-    rating = serializers.FloatField()
 
 class ProductSerializer(serializers.Serializer):
     user = UserSerializer()
@@ -54,6 +37,28 @@ class orderSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
     selfpickup = serializers.BooleanField()
     delivery = UserSerializer()
+
+class userdetailsSerializer(serializers.Serializer):
+    user = UserSerializer()
+    mobile = serializers.CharField()
+    admin = serializers.BooleanField()
+    objectname = serializers.CharField()
+    airport = serializers.CharField()
+    category = serializers.CharField()
+    dp = serializers.CharField()
+    serves = catSerializer()
+    active = serializers.BooleanField()
+    doctor = serializers.BooleanField()
+    latitude = serializers.CharField()
+    longitude = serializers.CharField()
+    active = serializers.BooleanField()
+    risk = serializers.IntegerField()
+    total = serializers.IntegerField()
+    rating = serializers.FloatField()
+    deli = serializers.BooleanField()
+    co = orderSerializer()
+    cabIdle = serializers.BooleanField()
+    cabO = cabOrderSerializer()
 
 class hotelSerializer(serializers.Serializer):
     checkin = serializers.CharField()

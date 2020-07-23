@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 # from api.models import Product,order,userdetails,Complain,Tax,cat
 from cab.models import carClass,cabdetails,cabOrder
-from api.serializers import UserSerializer
+# from api.serializers import UserSerializer
 
 # class kafkaSerializer:
 class kafkaSerializer(serializers.Serializer):
@@ -11,7 +11,14 @@ class kafkaSerializer(serializers.Serializer):
 class carClassSerializer(serializers.Serializer):
     cartype = serializers.CharField()
     seat = serializers.IntegerField()
-    
+
+class UserSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    username = serializers.CharField()
+    email = serializers.CharField()
+
+
 class cabdetailsSerializer(serializers.Serializer):
     user = UserSerializer()
     cartype = carClassSerializer()

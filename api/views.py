@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.http import JsonResponse
 import random
-from cab.models import cabOrder
+from cab.models import cabOrder,cabdetails
 # from .serializers import eventSerializer,UserSerializer,participateSerializer,EventSerializer,userDetailsSerializer
 from rest_framework.generics import ListAPIView
 from cab.serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer,kafkaSerializer
@@ -1031,9 +1031,27 @@ def listflight(request):
 
 
 
+def godseye(request):
+    Airport = request.GET.get('airport')
 
+    userall = userdetails.objects.all()
 
-
+    listuser = []
+    listdelivery = []
+    listcab = []
+    for u in userall:
+        if u.category == 'NA':
+            serial = userdetailsSerializer(u)
+            listuser.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'risk':serial.data['risk']})
+        elif u.category == 'DELIVERY' and u.airport == Airport:
+            serial = userdetailsSerializer(u)
+            listdelivery.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'Ondelivery':serial.data['deli']})
+        elif u.category == 'CAB' and u.airport == Airport:
+            serial = userdetailsSerializer(u)
+            c = cabdetails.objects.get(user=u.user)
+            listcab.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'isIdle':serial.data['cabIdle'],'Going to':serial.data['cabO'],'cabModel':c.carModel,'cabtype':c.cartype.cartype,'cabRegistration':c.carRegistration})
+                 
+    return JsonResponse({'Users':listuser,'delivery':listdelivery,'listcab':listcab})    
 
 
 
