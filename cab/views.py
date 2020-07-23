@@ -326,7 +326,7 @@ def droploactionsuggestion(user1,code,Date):
         if ud.airport == code.upper():
             if ud.category == 'HOTEL':
                 ho = hotel.objects.get(Order=i)
-                Date1=datetime.datetime.strptime(ho.checkin, '%Y-%m-%d %H:%M:%S')
+                Date1=datetime.datetime.strptime(ho.checkin, '%Y-%m-%d %H:%M:%S.%f')
                 if Date.day == Date1.day and Date.month == Date1.month and Date.year == Date1.year:
                     serial = orderSerializer(i)
                     serialud = userdetailsSerializer(ud)
