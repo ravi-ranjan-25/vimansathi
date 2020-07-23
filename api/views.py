@@ -1048,8 +1048,9 @@ def godseye(request):
             listdelivery.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'Ondelivery':serial.data['deli']})
         elif u.category == 'CAB' and u.airport == Airport:
             serial = userdetailsSerializer(u)
-            c = cabdetails.objects.get(user=u.user)
-            listcab.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'isIdle':serial.data['cabIdle'],'Going to':serial.data['cabO'],'cabModel':c.carModel,'cabtype':c.cartype.cartype,'cabRegistration':c.carRegistration})
+            z = cabdetails.objects.filter(user=u.user)
+            for c in z:
+                listcab.append({'first_name':serial.data['user']['first_name'],'username':serial.data['user']['username'],'isIdle':serial.data['cabIdle'],'Going to':serial.data['cabO'],'cabModel':c.carModel,'cabtype':c.cartype.cartype,'cabRegistration':c.carRegistration})
                  
     return JsonResponse({'Users':listuser,'delivery':listdelivery,'listcab':listcab})    
 
