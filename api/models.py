@@ -163,8 +163,14 @@ class storerestro(models.Model):
     def __str__(self):
         return self.Order.orderid
 
-
-
+class productComplain(models.Model):
+    Order = models.ForeignKey(order,on_delete = models.CASCADE)
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    complainref = models.CharField(unique = True,default="NA",max_length=256)
+    complain = models.CharField(unique = False,default="NA",max_length=256)
+    status = models.IntegerField(default=-1,max_length=256)
+    time = models.DateTimeField(default = timezone.now())
+    
 
 
 

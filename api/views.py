@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book,productComplain
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -344,6 +344,13 @@ def gettxnid():
     txnid1 = random.randint(100,999) + random.randint(9999,10000) 
 
     txn = "TXN15"+str(txnid1)
+    
+    return txn
+
+def getcompid():
+    txnid1 = random.randint(100,999) + random.randint(9999,10000) 
+
+    txn = "COMP45"+str(txnid1)
     
     return txn
 
@@ -1293,7 +1300,7 @@ def resolveComplain(request):
 def currentorders(request):
     Username = request.GET.get('username')
 
-    o = order.objects.filter(user__username=Username).exclude(accept=3).exclude(accept=2)
+    o = order.objects.filter(user__username=Username).exclude(accept=3).exclude(accept=2).exclude(accept=4)
 
     list = []
 
@@ -1311,7 +1318,25 @@ def currentorders(request):
             CheckOUT = hotelserial.data['checkout']
         list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
 
+    o = order.objects.filter(user__username=Username,accept=3)
+    list3 = []
+    for a in o:
+        serial = orderSerializer(a)
+        ser = User.objects.get(username=serial.data['product']['user']['username'])
+        ud = userdetails.objects.get(user=ser)
+        serialud = userdetailsSerializer(ud)
+        checkIn = 'NA'
+        CheckOUT= 'NA'
+        if ud.category == 'HOTEL':
+            h = hotel.objects.get(Order=a)
+            hotelserial = hotelSerializer(h)
+            checkIn = hotelserial.data['checkin']
+            CheckOUT = hotelserial.data['checkout']
+        list3.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
+
+
     list1 = []
+
 
     c = cabOrder.objects.filter(user__username=Username).exclude(accept=1).exclude(accept=2)
     for i in c:
@@ -1319,7 +1344,7 @@ def currentorders(request):
         list1.append(serial.data)
         
 
-    return JsonResponse({'orders':list,'cab':list1})  
+    return JsonResponse({'orders':list,'cab':list1,'previous':list3})  
 
 def cancelOrder(request):
     Orderid = request.GET.get('orderid')
@@ -1371,4 +1396,15 @@ def cancelcab(request):
 
     return JsonResponse({'amount refunded':o.price*0.80})  
 
+def addComplains(request):
+    Username = request.GET.get('username')    
+    Orderid = request.GET.get('orderid')
+    Complain = request.GET.get('complain')
     
+    compid = getcompid()
+    user1 = User.objects.get(username=Username)
+    o = order.objects.get(orderid=Orderid)
+    c = productComplain(Order=o,user=user1,complainref=compid)
+    c.save()
+
+    return JsonResponse({'compid':c.complainref})
