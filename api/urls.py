@@ -96,6 +96,9 @@ urlpatterns = [
     #####################################################################
     path('addstorerating',views.updatestoreRating,name = "resolve"),
     path('addhotelrating',views.hotelRating,name = "resolve"),
+    path('viewcurrentorders',views.currentorders,name = "resolve"),
+    path('cancelorder',views.cancelOrder,name = "resolve"),
+    path('cancelcab',views.cancelcab,name = "resolve"),
 
 
 ]

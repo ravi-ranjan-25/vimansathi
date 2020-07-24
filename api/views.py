@@ -1290,3 +1290,85 @@ def resolveComplain(request):
 #######################################################
 
 
+def currentorders(request):
+    Username = request.GET.get('username')
+
+    o = order.objects.filter(user__username=Username).exclude(accept=3).exclude(accept=2)
+
+    list = []
+
+    for a in o:
+        serial = orderSerializer(a)
+        ser = User.objects.get(username=serial.data['product']['user']['username'])
+        ud = userdetails.objects.get(user=ser)
+        serialud = userdetailsSerializer(ud)
+        checkIn = 'NA'
+        CheckOUT= 'NA'
+        if ud.category == 'HOTEL':
+            h = hotel.objects.get(Order=a)
+            hotelserial = hotelSerializer(h)
+            checkIn = hotelserial.data['checkin']
+            CheckOUT = hotelserial.data['checkout']
+        list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
+
+    list1 = []
+
+    c = cabOrder.objects.filter(user__username=Username).exclude(accept=1).exclude(accept=2)
+    for i in c:
+        serial = cabOrderSerializer(i)
+        list1.append(serial.data)
+        
+
+    return JsonResponse({'orders':list,'cab':list1})  
+
+def cancelOrder(request):
+    Orderid = request.GET.get('orderid')
+
+    o = order.objects.get(orderid=Orderid)
+    o.accept = 4
+    o.save()
+
+    w = wallet.objects.get(user=o.product.user)
+    w.amount = w.amount - o.amount*0.75
+    w.save()
+
+    txn = gettxnid()
+
+    t = Tax(user = o.product.user,Order=o,txnid=txn,credit=False,amount=o.amount*0.75)
+    t.save()
+
+    w = wallet.objects.get(user=o.user)
+    w.amount = w.amount + o.amount*0.75
+    w.save()
+
+    txn = gettxnid()
+
+    t = Tax(user = o.user,Order=o,txnid=txn,credit=True,amount=o.amount*0.75)
+    t.save()
+
+
+    return JsonResponse({'amount refunded':o.amount*0.75})  
+    
+def cancelcab(request):
+    Orderid = request.GET.get('cabid')
+
+    o = cabOrder.objects.get(cabid=Orderid)
+    o.accept = 4
+    o.save()
+    
+    
+
+    
+    w = wallet.objects.get(user=o.user)
+    w.amount = w.amount + o.price*0.80
+    w.save()
+
+    txn = gettxnid()
+
+    t = Tax(user = o.user,txnid=txn,credit=True,amount=o.price*0.75)
+    t.save()
+
+
+    return JsonResponse({'amount refunded':o.price*0.80})  
+
+    
