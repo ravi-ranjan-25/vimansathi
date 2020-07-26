@@ -17,6 +17,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 import datetime
 import time
+import s2geometry as s2
 # Create your views here.
 def signup(request):
     userName = request.GET.get('username')
@@ -1408,3 +1409,42 @@ def addComplains(request):
     c.save()
 
     return JsonResponse({'compid':c.complainref})
+
+def isInside(lat,long,p):
+    latlng1 = s2.S2LatLng.FromDegrees(lat,long)
+    cell1 = s2.S2CellId(latlng1)
+    p.contains(cell1)
+
+def arogyasetu(request):
+    Username = request.GET.get('username')
+
+    link1 = 'https://vimansathi.firebaseio.com/user/'+ Username +'.json'
+    response1 = requests.get(link1)
+    response1 = response1.json()
+
+    latlng = s2.S2LatLng.FromDegrees(latitude, longitude)
+    cell = s2.S2CellId(latlng)
+    
+    level = [13,12,11,10]
+
+
+    
+
+    userall = userdetails.objects.all().exclude(user__username=Username)
+    list = []
+    for l in level:
+        p = cell.parent(l)
+        count = 0
+        for u in userall:
+            if u.category == 'NA' and risk==3:
+                link1 = 'https://vimansathi.firebaseio.com/user/'+ u.user.username +'.json'
+                response = requests.get(link)
+                response = response.json()
+                if response!=None and response['address'] == response1['address']:
+                    result = isInside(float(response1['latitude']),float(response1['longitude']),p)
+                    if result == True:
+                        count += 1
+        list.append(count)                
+                    
+    return JsonResponse({'count':list})
+

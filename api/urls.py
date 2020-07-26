@@ -100,6 +100,7 @@ urlpatterns = [
     path('cancelorder',views.cancelOrder,name = "resolve"),
     path('cancelcab',views.cancelcab,name = "resolve"),
     path('addcomplains',views.addComplains,name = "resolve"),
+    path('riskinarea',views.arogyasetu,name = "resolve"),
 
 
 ]
