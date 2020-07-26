@@ -96,6 +96,8 @@ class order(models.Model):
     accept = models.IntegerField(unique=False,default=-1,max_length=256)
     delivery = models.ForeignKey(User,on_delete=models.CASCADE,null=True,related_name='deliver',default=None)
     selfpickup = models.BooleanField(default=True) 
+    review = models.CharField(unique = False,default="NA",max_length=256) 
+    reviewState = models.IntegerField(unique=False,default=-1,max_length=256)
     cab = models.ForeignKey(cabOrder,on_delete=models.CASCADE,null=True,default=None)
     time = models.DateTimeField(default = timezone.now())
     pickupDate = models.DateTimeField(default = timezone.now())

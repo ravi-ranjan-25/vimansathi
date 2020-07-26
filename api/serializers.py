@@ -37,6 +37,8 @@ class orderSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
     selfpickup = serializers.BooleanField()
     delivery = UserSerializer()
+    review = serializers.CharField() 
+    reviewState = serializers.IntegerField()
 
 class userdetailsSerializer(serializers.Serializer):
     user = UserSerializer()

@@ -101,6 +101,9 @@ urlpatterns = [
     path('cancelcab',views.cancelcab,name = "resolve"),
     path('addcomplains',views.addComplains,name = "resolve"),
     path('riskinarea',views.arogyasetu,name = "resolve"),
+    path('addreview',views.addReview,name = "resolve"),
+    path('showProductReview',views.showProductReview,name = "resolve"),
+    path('downloadwords',views.downloadwords,name = "resolve"),
 
 
 ]
