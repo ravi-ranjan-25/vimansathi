@@ -2,6 +2,6 @@ from celery import shared_task
 from time import sleep
 
 @shared_task
-def sleepy(duration):
-    sleep(duration)
+def sleepy():
+    print(1)
     return 1

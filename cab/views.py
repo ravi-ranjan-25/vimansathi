@@ -332,12 +332,13 @@ def droploactionsuggestion(user1,code,Date):
         if ud.airport == code.upper():
             if ud.category == 'HOTEL':
                 ho = hotel.objects.get(Order=i)
-                Date1=datetime.datetime.strptime(ho.checkin, '%Y-%m-%d %H:%M:%S.%f')
-                if Date.day == Date1.day and Date.month == Date1.month and Date.year == Date1.year:
-                    serial = orderSerializer(i)
-                    serialud = userdetailsSerializer(ud)
+                if ho.checkin != 'NA':
+                    Date1=datetime.datetime.strptime(ho.checkin, '%Y-%m-%d %H:%M:%S.%f')
+                    if Date.day == Date1.day and Date.month == Date1.month and Date.year == Date1.year:
+                        serial = orderSerializer(i)
+                        serialud = userdetailsSerializer(ud)
+                        list.append({'hotel order':serial.data,'details':serialud.data})
 
-                list.append({'hotel order':serial.data,'details':serialud.data})
             
 
     return list    
@@ -446,7 +447,7 @@ def getcorpus():
     return corpus
 
 def mainnlp(request):
-    sleepy(10)
+    sleepy.delay()
     # nltk.download('stopwords')
     # comment = request.GET.get('review')
     # corpus = getcorpus()
