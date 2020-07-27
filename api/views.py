@@ -582,7 +582,7 @@ def storeorderr(request):
         ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
-        Userde = userdetails.object.get(user__username=serial.data['user']['username'])
+        Userde = userdetails.objects.get(user__username=serial.data['user']['username'])
         udd = userdetailsSerializer(Userde)
         checkIn = 'NA'
         CheckOUT= 'NA'
