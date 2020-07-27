@@ -29,14 +29,13 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from .tasks import bookcab1
-
+import s2geometry as s2
 
 # import s2geometry as s2
 def createmyuser(request):
     u = User.objects.create_superuser('ravi1','ravi2514999@myemail.com','maverick')
     u.save()
     return JsonResponse({'result':2})
-
 
 
 
@@ -178,7 +177,7 @@ def showavailablerides(request):
     Username = request.GET.get('username')
     
     c = cabdetails.objects.get(user__username=Username)
-    co = cabOrder.objects.filter(cab=None,cartype=c.cartype).exclude(accept=-10)
+    co = cabOrder.objects.filter(cab=c,cartype=c.cartype,accept=11).exclude(accept=-10)
     list = []
     for c in co:
         serial = cabOrderSerializer(c)

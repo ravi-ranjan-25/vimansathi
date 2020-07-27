@@ -38,6 +38,6 @@ urlpatterns = [
     path('cabsuggestions',views.masterfunc , name = "login"),
     path('synctime',views.changepickuptime , name = "login"),
     path('syncdelivery',views.addCab , name = "login"),
-    path('cc',views.mainnlp , name = "login"),
+    path('addorderreview',views.mainnlp , name = "login"),
    
 ]
