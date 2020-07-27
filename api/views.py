@@ -489,7 +489,7 @@ def viewliveStoreorders(request):
     
     user1 = User.objects.get(username=Username)
     
-    o = order.objects.filter(product__user=user1).exclude(accept=3)
+    o = order.objects.filter(product__user=user1).exclude(accept=3).exclude(accept=4)
     list = []
 
     for a in o:
@@ -582,6 +582,8 @@ def storeorderr(request):
         ser = User.objects.get(username=serial.data['product']['user']['username'])
         ud = userdetails.objects.get(user=ser)
         serialud = userdetailsSerializer(ud)
+        Userde = userdetails.object.get(user__username=serial.data['user']['username'])
+        udd = userdetailsSerializer(Userde)
         checkIn = 'NA'
         CheckOUT= 'NA'
         if ud.category == 'HOTEL':
@@ -589,11 +591,23 @@ def storeorderr(request):
             hotelserial = hotelSerializer(h)
             checkIn = hotelserial.data['checkin']
             CheckOUT = hotelserial.data['checkout']
-        list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT})
+        list.append({'order':serial.data,'store_details':serialud.data,'checkin':checkIn,'checkout':CheckOUT,'user details':udd.data})
         
     return JsonResponse({'result':list})
    
+def addcheckin(request):
+    Orderid = request.GET.get('orderid')
+    Op = request.GET.get('operation')
+
+    o = order.objects.get(orderid=Orderid)
     
+    if Op == 'checkin':
+        o.accept = 2
+    else:
+        o.accept = 3
+
+    return JsonResponse({'status':o.accept})
+
 def hotelorder(request):
     odid = request.GET.get('orderid')
     checki = request.GET.get('checkin')

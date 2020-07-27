@@ -27,7 +27,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-
+from .tasks import sleepy
 
 
 # import s2geometry as s2
@@ -445,29 +445,31 @@ def getcorpus():
 
     return corpus
 
-def mainnlp(comment):
+def mainnlp(request):
+    sleepy(10)
     # nltk.download('stopwords')
     # comment = request.GET.get('review')
-    corpus = getcorpus()
-    review = re.sub('[^a-zA-Z]',' ', comment)
-    review = review.lower()
-    review=review.split()
-    ps=PorterStemmer()
-    review = [ps.stem(word) for word in review if not word in stopwords.words('english')]
-    review = ' '.join(review)
-    corpus.append(review)
+    # corpus = getcorpus()
+    # review = re.sub('[^a-zA-Z]',' ', comment)
+    # review = review.lower()
+    # review=review.split()
+    # ps=PorterStemmer()
+    # review = [ps.stem(word) for word in review if not word in stopwords.words('english')]
+    # review = ' '.join(review)
+    # corpus.append(review)
 
-    cv= CountVectorizer(max_features=1500)
-    x=cv.fit_transform(corpus).toarray()
+    # cv= CountVectorizer(max_features=1500)
+    # x=cv.fit_transform(corpus).toarray()
 
-    BASE_DIRS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    model_dir= os.path.join(BASE_DIRS,'cab/ReviewNLP.pkl')
-    mdl = joblib.load(model_dir)
+    # BASE_DIRS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # model_dir= os.path.join(BASE_DIRS,'cab/ReviewNLP.pkl')
+    # mdl = joblib.load(model_dir)
 
-    s = mdl.predict(x[-1].reshape(1,-1)).tolist()
-    # print(s)
+    # s = mdl.predict(x[-1].reshape(1,-1)).tolist()
+    # # print(s)
     
-    for i in s:
-        a = i
+    # for i in s:
+    #     a = i
 
-    return i
+    # return i
+    return JsonResponse({'result':1})
