@@ -98,7 +98,7 @@ def caborder(request):
     c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
     ccc = 'xa'
     c.save()
-    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime())
+    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
