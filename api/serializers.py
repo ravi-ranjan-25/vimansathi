@@ -40,7 +40,7 @@ class orderSerializer(serializers.Serializer):
     cab = cabOrderSerializer()
     review = serializers.CharField() 
     reviewState = serializers.IntegerField()
-    pickDate = serializers.DateTimeField()
+    pickupDate = serializers.DateTimeField()
     time = serializers.DateTimeField()
 
 class userdetailsSerializer(serializers.Serializer):

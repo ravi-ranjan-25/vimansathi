@@ -9,8 +9,9 @@ from celery import Celery
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vimansathi.settings')
 app = Celery('vimansathi')
 app.conf.broker_read_url = 'redis://viman-ro.hmguvw.ng.0001.aps1.cache.amazonaws.com:6379'
-app.conf.broker_write_url = 'redis://viman.hmguvw.ng.0001.aps1.cache.amazonaws.com:6379'
-                                   
+app.conf.broker_write_url = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379'
+                                    
+                           
 
 # app.conf.result_backend = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379/0'
 app.config_from_object('django.conf:settings')
