@@ -352,7 +352,7 @@ def masterfunc(request):
 
     Date=datetime.datetime.strptime(Date, '%Y-%m-%d')
 
-    Date = Date.date()
+    # Date = Date.date()
 
     
     list2 = storerestroordersbycity(Username,Airport,Date)
