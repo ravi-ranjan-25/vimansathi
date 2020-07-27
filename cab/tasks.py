@@ -1,7 +1,11 @@
-from celery import shared_task
+from celery import shared_task,app
 from time import sleep
+from cab.models import cabOrder
+from vimansathi.celery import app
 
-@shared_task
-def sleepy():
-    print(1)
-    return 1
+@app.task
+def bookcab1(cid):
+    c = cabOrder.objects.get(cabid=cid)
+    c.accept = -1
+    c.save()
+    return True

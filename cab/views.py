@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 import datetime
+from datetime import timedelta
 import time
 import os
 import joblib
@@ -27,7 +28,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-from .tasks import sleepy
+from .tasks import bookcab1
 
 
 # import s2geometry as s2
@@ -35,6 +36,8 @@ def createmyuser(request):
     u = User.objects.create_superuser('ravi1','ravi2514999@myemail.com','maverick')
     u.save()
     return JsonResponse({'result':2})
+
+
 
 
 def addcab(request):
@@ -92,9 +95,10 @@ def caborder(request):
     user1 = User.objects.get(username=Username)
     user2 = User.objects.get(username='admin')
     cid = 'CAB'+str(random.randint(9999,99999))    
-    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl)
-
+    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
+    ccc = 'xa'
     c.save()
+    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime())
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
@@ -174,7 +178,7 @@ def showavailablerides(request):
     Username = request.GET.get('username')
     
     c = cabdetails.objects.get(user__username=Username)
-    co = cabOrder.objects.filter(cab=None,cartype=c.cartype)
+    co = cabOrder.objects.filter(cab=None,cartype=c.cartype).exclude(accept=-10)
     list = []
     for c in co:
         serial = cabOrderSerializer(c)
