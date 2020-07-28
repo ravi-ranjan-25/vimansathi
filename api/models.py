@@ -130,6 +130,8 @@ class userdetails(models.Model):
     rating = models.FloatField(default=1,max_length=256)
     cabIdle = models.BooleanField(default=True)
     cabO = models.ForeignKey(cabOrder,on_delete = models.CASCADE,null=True,default=None)
+    accepted = models.IntegerField(default=1)
+    rejected = models.IntegerField(default=1)
 
     def __str__(self):
         return self.user.username

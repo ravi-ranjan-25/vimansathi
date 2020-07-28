@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import s2geometry as s2
 import requests
 from time import sleep
+
 def isInside(lat,long,p):
     latlng1 = s2.S2LatLng.FromDegrees(lat,long)
     cell1 = s2.S2CellId(latlng1)
@@ -48,9 +49,11 @@ def dispatch(cid):
                                     ud.cabIdle = True
                                     C.accept = -10
                                     C.save()
+                                    c.rejected += 1
                                     wasassigned.append(u.user.username)
                                 else:
                                     ud.cabO = C
+                                    c.accepted += 1
                                     break  
                 except KeyError:
                     continue
@@ -60,6 +63,60 @@ def dispatch(cid):
             return True
             break
         elif count == 10:
+            return False
+            break
+
+    return True        
+
+def dispatchdilevery(od):
+    wasassigned = []
+    C = order.objects.get(orderid=od)
+    ud1 = order.objects.get(user__username=C.product.user.username)
+
+    latlng = s2.S2LatLng.FromDegrees(float(ud1.latitude),float(ud1.longitude))
+    cell = s2.S2CellId(latlng)
+    
+    
+    link1 = 'https://vimansathi.firebaseio.com/delivery.json'
+    response = requests.get(link1)
+    response = response.json()
+    userall = userdetails.objects.all()
+    
+
+
+    count = 18
+    while True:
+        p = cell.parent(count)
+        for u in userall:
+            if u.user.username not in wasassigned:
+                try:
+                    if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                        if u.category == 'DELIVERY' and u.deli == False:
+                            ud = userdetails.objects.get(user__username = u.user.username)
+                            C.delivery = ud.user
+                            ud.deli = True
+                            C.accept = 11
+                            C.save()
+                            sleep(15)
+                            if C.accept == 11:
+                                C.delivery = None                       
+                                ud.deli = False
+                                C.accept = 100
+                                C.save()
+                                ud.rejected += 1
+                                wasassigned.append(u.user.username)
+                            else:
+                                ud.co = C
+                                ud.accepted += 1
+                                break  
+                except KeyError:
+                    continue
+        print(1)
+        count -= 1
+        if C.accept == 1: 
+            return True
+            break
+        elif count == 15:
             return False
             break
 
