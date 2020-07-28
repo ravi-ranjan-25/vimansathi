@@ -20,9 +20,11 @@ import time
 import s2geometry as s2
 import requests
 import joblib
+import numpy as np
 # from cab.views import mainnlp
 import re
 import nltk
+import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -1558,4 +1560,55 @@ def showProductReview(request):
 
     return JsonResponse({'result':list})
 
+def ohevalue(df):
+    BASE_DIRS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    model_dir= os.path.join(BASE_DIRS,'api/fare_ohe.pkl')
+    ohe_col = joblib.load(model_dir)
+    cat_columns=['class']
+    df_processed = pd.get_dummies(df, columns=cat_columns)
+    print(df_processed)
+    newdict={}
+    print(ohe_col)
+    for i in ohe_col:
+        if i in df_processed.columns:
+    	    newdict[i]=df_processed[i].values
+        else:
+    	    newdict[i]=0
+    
+    newdf=pd.DataFrame(newdict)
+    print(newdf)
+    return newdf
 
+def approve(unit):
+    try:
+        BASE_DIRS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        model_dir= os.path.join(BASE_DIRS,'api/fare_pred_model.pkl')
+    
+        mdl=joblib.load(model_dir)
+        
+        X=unit
+        X=np.array(unit).tolist()
+
+        # print(X[0][3])
+        Y = np.array([int(X[0][3]),int(X[0][4]),int(X[0][5]),int(X[0][6]),int(X[0][0]),int(X[0][1]),int(X[0][2])])
+        Y=Y.reshape(1,-1)
+        print(Y)
+        y_pred=mdl.predict(Y)
+        print(y_pred)
+        # newdf=pd.DataFrame(y_pred>0.58, columns=['fare'])
+        # print(newdf)
+        # K.clear_session()
+        return y_pred
+    except ValueError as e:
+        return (e.args[0])
+
+def cxcontact(request):
+    myDict = (request.GET).dict()
+    print(myDict)
+    df=pd.DataFrame(myDict, index=[0])
+    answer=approve(ohevalue(df)).tolist()
+    # a = answer[0]
+    
+    for i in answer:
+        a = i 
+    return JsonResponse({'result':i})

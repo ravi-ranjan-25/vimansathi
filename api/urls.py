@@ -38,7 +38,7 @@ urlpatterns = [
     path('addhotel',views.staticimg,name="add"),
     path('updatecheckincheckout',views.addcheckin,name="add"),
 
-    # path('storeordeer',views.userorder,name="add"),
+# path('storeordeer',views.userorder,name="add"),
     path('processorder',views.storeorder,name="add"),
     
     #############################################################3
@@ -60,6 +60,7 @@ urlpatterns = [
     # path('software/paytmcall',views.paytmCall,name = "paytmcall"),
     path('transaction',transactionListView.as_view(),name = "transaction"),
     path('showtransaction',views.showtrans,name = "transaction"),
+    path('predictfare',views.cxcontact,name = "transaction"),
 
 
 #################################################################################

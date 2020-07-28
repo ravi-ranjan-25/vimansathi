@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('api.urls')),
     path('cab/',include('cab.urls')),
+    path('recommend/',include('recommendation.urls')),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #wd
