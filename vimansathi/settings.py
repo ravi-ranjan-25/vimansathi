@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'cab',
-    'django_celery_results'
+    'django_celery_results',
+    'recommendation'
     
 
 ]
