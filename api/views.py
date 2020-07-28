@@ -646,7 +646,7 @@ def storeorder(request):
     if prepare is not None:
         o.preparing_packaging = True
         if d.cab is not None:
-            dispatchDelivery.apply_async(args=[d],eta=d.cab.pickupTime - timedelta(minutes=15))
+            dispatchDelivery.apply_async(args=[d.orderid],eta=d.cab.pickupTime - timedelta(minutes=15))
             d.accept = 100
         else:
             d.accept = 1
