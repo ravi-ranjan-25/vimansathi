@@ -132,6 +132,8 @@ class userdetails(models.Model):
     cabO = models.ForeignKey(cabOrder,on_delete = models.CASCADE,null=True,default=None)
     accepted = models.IntegerField(default=1)
     rejected = models.IntegerField(default=1)
+    vip = models.BooleanField(default=False)
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
