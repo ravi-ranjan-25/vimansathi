@@ -84,7 +84,7 @@ def dispatchdilevery(od):
     
 
 
-    count = 18
+    count = 13
     while True:
         p = cell.parent(count)
         for u in userall:
@@ -116,7 +116,7 @@ def dispatchdilevery(od):
         if C.accept == 1: 
             return True
             break
-        elif count == 15:
+        elif count == 10:
             return False
             break
 

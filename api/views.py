@@ -640,6 +640,7 @@ def storeorder(request):
     dispatched1 = request.GET.get('dispatched')
     delivered1 = request.GET.get('delivered')
     rating1 = request.GET.get('rating')
+    
 
     d = order.objects.get(orderid=odid)
 
