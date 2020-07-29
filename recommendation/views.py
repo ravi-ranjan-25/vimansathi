@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book,productComplain
 from django.contrib.auth.models import User
 import json
+from recommendation.models import userinteraction
+
 def createDataset(reqeust):
     # wb = Workbook()
     # sheet1 = wb.add_sheet('Sheet 1')
@@ -148,3 +150,16 @@ def userproductinteractions(request):
 #     print('Schema ARN:' + schema_arn )    
 #     # ARN:arn:aws:personalize:ap-south-1:413538326238:schema/orderinteractions
 #     return JsonResponse({'result':1})
+
+
+def clickEvent(request):
+    proid = request.GET.get('productid')
+    Username = request.GET.get('username')
+    Value = request.GET.get('amount')
+    Event = request.GET.get('event_type')
+    
+    r = userinteraction(USER_ID=Username,ITEM_ID=proid,EVENT_TYPE=Event.upper(),EVENT_VALUE=float(Value))
+    r.save()
+
+    return JsonResponse({'result':1})
+
