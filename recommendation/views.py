@@ -60,7 +60,7 @@ def userproductinteractions(request):
         proid = o.product.productid
         Username = o.user.username
         
-        list.append({'USER_ID':Username,'ITEM_ID':proid,'TIMESTAMP':o.time.timestamp()*1000,'EVENT_TYPE':'PURCHASE'})
+        list.append({'USER_ID':Username,'ITEM_ID':proid,'TIMESTAMP':int(o.time.timestamp()*1000),'EVENT_TYPE':'PURCHASE'})
 
 
     return JsonResponse({'result':list})
