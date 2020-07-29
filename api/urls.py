@@ -18,7 +18,7 @@ from django.urls import path,include
 from api import views
 from rest_framework import routers
 from .views import complainListView,transactionListView
-
+from cab.views import measureLoyality
 # from .views import EventListView
 
 
@@ -107,7 +107,7 @@ urlpatterns = [
     path('showProductReview',views.showProductReview,name = "resolve"),
     path('downloadwords',views.downloadwords,name = "resolve"),
     
-    path('measureloyality',views.measureLoyality,name = "resolve"),
+    path('measureloyality',measureLoyality,name = "resolve"),
 
 
 ]

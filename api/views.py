@@ -443,7 +443,7 @@ def placeOrder(request):
     Q = int(Q)
     
     
-    a = Q*(p.sellingPrice - p.sellingPrice*p.discount)
+    a = Q*(p.sellingPrice - p.sellingPrice*(p.discount/100))
     if Pickup is False:
         aa = 0.25*a + a
     else:

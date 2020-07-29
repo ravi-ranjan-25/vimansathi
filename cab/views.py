@@ -40,14 +40,14 @@ def createmyuser(request):
 def measureLoyality(request):
     userall = userdetails.objects.all()
 
-
-    for u in userdetails:
+    list = []
+    for u in userall:
         if u.category == 'NA':
             b = book.objects.filter(user=u.user)
             prev = None
             points = 0
             for i in b:
-                current = b.Route.Airline.name
+                current = i.dayobject.Route.Airline.name
                 if prev is None:
                     prev = current
                     points += 10 
@@ -64,6 +64,7 @@ def measureLoyality(request):
             u.save()
             list.append({'username':u.user.username,'vip':u.vip,'vippoints':u.points})
 
+    return JsonResponse({'result':list})
 
 
 def addcab(request):
@@ -121,7 +122,7 @@ def caborder(request):
     user1 = User.objects.get(username=Username)
     user2 = User.objects.get(username='admin')
     cid = 'CAB'+str(random.randint(9999,99999))    
-    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper,latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
+    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper(),latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
     ccc = 'xa'
     c.accept=11
     c.save()
