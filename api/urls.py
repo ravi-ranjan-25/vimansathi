@@ -106,6 +106,8 @@ urlpatterns = [
     path('addreview',views.addReview,name = "resolve"),
     path('showProductReview',views.showProductReview,name = "resolve"),
     path('downloadwords',views.downloadwords,name = "resolve"),
+    
+    path('measureloyality',views.measureLoyality,name = "resolve"),
 
 
 ]

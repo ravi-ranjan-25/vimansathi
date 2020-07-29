@@ -37,6 +37,33 @@ def createmyuser(request):
     u.save()
     return JsonResponse({'result':2})
 
+def measureLoyality(request):
+    userall = userdetails.objects.all()
+
+
+    for u in userdetails:
+        if u.category == 'NA':
+            b = book.objects.filter(user=u.user)
+            prev = None
+            points = 0
+            for i in b:
+                current = b.Route.Airline.name
+                if prev is None:
+                    prev = current
+                    points += 10 
+                elif prev == current:       
+                    prev = current
+                    points += 10
+                else:
+                    prev = current
+                    points -= 5        
+            if points > 200:
+                u.vip=True
+            
+            u.points = points
+            u.save()
+            list.append({'username':u.user.username,'vip':u.vip,'vippoints':u.points})
+
 
 
 def addcab(request):
