@@ -108,7 +108,7 @@ def caborder(request):
     pl = request.GET.get('picklater')
     
     if pl is not None:
-        pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S')
+        pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S.%f')
     else:
         pl = timezone.now()
 
