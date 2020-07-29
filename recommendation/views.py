@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book,productComplain
 from django.contrib.auth.models import User
-
+import json
 def createDataset(reqeust):
     # wb = Workbook()
     # sheet1 = wb.add_sheet('Sheet 1')
@@ -60,7 +60,91 @@ def userproductinteractions(request):
         proid = o.product.productid
         Username = o.user.username
         
-        list.append({'USER_ID':Username,'ITEM_ID':proid,'TIMESTAMP':o.time,'EVENT_TYPE':'PURCHASE'})
+        list.append({'USER_ID':Username,'ITEM_ID':proid,'TIMESTAMP':o.time.timestamp()*1000,'EVENT_TYPE':'PURCHASE'})
 
 
     return JsonResponse({'result':list})
+
+# def createuserSchema(request):
+#     personalize = boto3.client('personalize')
+    
+
+#     schema_name = 'orderinteractions'
+    
+#     # Define the schema for your dataset
+#     schema = {
+#         "type": "record",
+#         "name": "Users",
+#         "namespace": "com.amazonaws.personalize.schema",
+#         "fields": [
+#             {
+#                 "name": "USER_ID",
+#                 "type": "string"
+#             },
+#             {
+#                 "name": "LOYALITY",
+#                 "type": "string",
+#                 "categorica"
+#             }
+#         ],
+#         "version": "1.0"
+#     }
+#     print(1)
+    
+#     # Create the schema for Amazon Personalize
+#     create_schema_response = personalize.create_schema(
+#         name = schema_name,
+#         schema = json.dumps(schema)
+#     )
+    
+#     #To get the schema ARN, use the following lines
+#     schema_arn = create_schema_response['schemaArn']
+#     print('Schema ARN:' + schema_arn )
+
+#     return JsonResponse({'result':1})
+    
+
+# def createSchema(request):
+#     personalize = boto3.client('personalize')
+    
+
+#     schema_name = 'orderinteractions'
+    
+#     # Define the schema for your dataset
+#     schema = {
+#         "type": "record",
+#         "name": "Interactions",
+#         "namespace": "com.amazonaws.personalize.schema",
+#         "fields": [
+#             {
+#                 "name": "USER_ID",
+#                 "type": "string"
+#             },
+#             {
+#                 "name": "ITEM_ID",
+#                 "type": "string"
+#             },
+#             {
+#                 "name": "EVENT_TYPE",
+#                 "type": "string"
+#             },
+#             { 
+#                 "name": "TIMESTAMP",
+#                 "type": "long"
+#             }
+#         ],
+#         "version": "1.0"
+#     }
+    
+    
+#     # Create the schema for Amazon Personalize
+#     create_schema_response = personalize.create_schema(
+#         name = schema_name,
+#         schema = json.dumps(schema)
+#     )
+    
+#     #To get the schema ARN, use the following lines
+#     schema_arn = create_schema_response['schemaArn']
+#     print('Schema ARN:' + schema_arn )    
+#     # ARN:arn:aws:personalize:ap-south-1:413538326238:schema/orderinteractions
+#     return JsonResponse({'result':1})

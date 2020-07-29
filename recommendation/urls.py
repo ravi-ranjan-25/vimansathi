@@ -26,6 +26,7 @@ urlpatterns = [
 # path('/user', , name = "userConsumptionN"),
     path('generateusercsv',views.createDataset , name = "login"),
     path('generateproductcsv',views.createproductDataset , name = "login"),
-    path('userproductinteractions',views.userproductinteractions , name = "login"),
+    path('userinteractions',views.userproductinteractions , name = "login"),
+    # path('createSchema',views.createSchema , name = "login"),
      
 ]
