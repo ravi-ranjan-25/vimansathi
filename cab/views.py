@@ -124,9 +124,8 @@ def caborder(request):
     cid = 'CAB'+str(random.randint(9999,99999))    
     c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper(),latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
     ccc = 'xa'
-    c.accept=11
     c.save()
-    # bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
+    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
@@ -206,7 +205,7 @@ def showavailablerides(request):
     Username = request.GET.get('username')
     
     c = cabdetails.objects.get(user__username=Username)
-    co = cabOrder.objects.filter(cab=None,cartype=c.cartype,accept=11).exclude(accept=-10)
+    co = cabOrder.objects.filter(cab=c,cartype=c.cartype,accept=11).exclude(accept=-10)
     list = []
     for c in co:
         serial = cabOrderSerializer(c)
