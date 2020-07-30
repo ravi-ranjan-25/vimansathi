@@ -168,7 +168,10 @@ def interationsUser(request):
 
     userall=userinteraction.objects.all()
     list = []
+    count = 0
     for u in userall:
         list.append({'USER_ID':u.USER_ID,'ITEM_ID':u.ITEM_ID,'EVENT_TYPE':u.EVENT_TYPE,'EVENT_VALUE':u.EVENT_VALUE,'TIMESTAMP':int(u.TIMESTAMP.timestamp()*1000)})
-
-    return JsonResponse({'result':list})    
+        if u.USER_ID not in list1:
+            count += 1
+            list.append(u.USER_ID)
+    return JsonResponse({'count':count,'result':list})    
