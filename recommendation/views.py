@@ -12,7 +12,7 @@ import json
 from recommendation.models import userinteraction
 from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
 from django.contrib.auth.models import User
-from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer
+from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer,ProductSerializer
 
 
 def recommendationget(request):
