@@ -29,7 +29,8 @@ def recommendationget(request):
     listrestro = []
     listhotel = []
     for i in response['itemList']:
-        pro = Product.objects.get(productid=i)
+        print(i['itemId'])
+        pro = Product.objects.get(productid=i['itemId'])
         ud = userdetails.objects.get(user=pro.user)
         if ud.airport == Airport.upper():
             serial = ProductSerializer(pro)
