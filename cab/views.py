@@ -521,9 +521,6 @@ def isInside(lat,long,p):
 
 
 def fareestimator(request):
-    Time = request.GET.get('time')
-    Dis = request.GET.get('distance')
-    Class = request.GET.get('class')
     Latitude = request.GET.get('latitude')
     Longitude = request.GET.get('longitude')
 
@@ -546,11 +543,5 @@ def fareestimator(request):
             except:
                 continue
 
-
-    link1 = 'http://dj-prod.eba-rmcmhham.ap-south-1.elasticbeanstalk.com/api/predictfare?time='+Time+'&distance='+Dis+'&class='+Class+'&availability='+str(count)
-    print(link1)
-    response = requests.get(link1)
-    response = response.json()
-
-    return JsonResponse({'result':response['result']})
+    return JsonResponse({'result':count})
    
