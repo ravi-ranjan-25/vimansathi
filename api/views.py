@@ -729,7 +729,7 @@ def updatestoreRating(request):
 
  
 
-def paytmCall(request):
+def paytmCall1(request):
         username1 = request.GET.get('username')
         am = request.GET.get('TXN_AMOUNT')
 
