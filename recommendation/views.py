@@ -169,6 +169,6 @@ def interationsUser(request):
     userall=userinteraction.objects.all()
 
     for u in userall:
-        list.append({'USER_ID':u.USER_ID,'ITEM_ID':u.ITEM_ID,'EVENT_TYPE':u.EVENT_TYPE,'EVENT_VALUE':u.EVENT_VALUE,'TIMESTAMP':int(o.time.timestamp()*1000)})
+        list.append({'USER_ID':u.USER_ID,'ITEM_ID':u.ITEM_ID,'EVENT_TYPE':u.EVENT_TYPE,'EVENT_VALUE':u.EVENT_VALUE,'TIMESTAMP':int(u.TIMESTAMP.timestamp()*1000)})
 
     return JsonResponse({'result':list})    
