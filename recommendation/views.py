@@ -173,7 +173,7 @@ def interationsUser(request):
     for u in userall:
         U = {'USER_ID':u.USER_ID,'ITEM_ID':u.ITEM_ID,'EVENT_TYPE':u.EVENT_TYPE,'EVENT_VALUE':u.EVENT_VALUE,'TIMESTAMP':int(u.TIMESTAMP.timestamp()*1000}
         list.append({'USER_ID':u.USER_ID,'ITEM_ID':u.ITEM_ID,'EVENT_TYPE':u.EVENT_TYPE,'EVENT_VALUE':u.EVENT_VALUE,'TIMESTAMP':int(u.TIMESTAMP.timestamp()*1000)})
-        if U not in list1 and u.EVENT_TYPE==PURCHASE:   
+        if U not in list1 and u.EVENT_TYPE==CLICK:   
             count += 1
             list1.append(U)
     return JsonResponse({'count':count,'result':list})    
