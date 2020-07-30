@@ -29,10 +29,10 @@ def recommendationget(request):
     listrestro = []
     listhotel = []
     for i in response['itemList']:
-        ud = userdetails.objects.get(user=i.user)
+        pro = Product.objects.get(productid=i)
+        ud = userdetails.objects.get(user=pro.user)
         if ud.airport == Airport.upper():
-            pro = Product.objects.get(productid=i)
-            serial = ProductSerializer(i)
+            serial = ProductSerializer(pro)
             if ud.category == 'STORE':
                 listshop.append(serial.data)
             elif ud.category == 'RESTAURANTS':
