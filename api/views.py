@@ -256,11 +256,12 @@ def addProduct(request):
     ud = userdetails.objects.get(user__username=Username)
     
 
-    c = cat.objects.filter(name=service.upper())
+    c = cat.objects.filter(name=service.upper(),airport=ud.airport)
     if len(c) > 0:
         
         if ud.airport == c[0].airport:
             service=c[0]
+
 
     else:
         Airport = ud.airport
@@ -416,13 +417,32 @@ def getcompid():
     
     return txn
 
+def recentcabs(request):
+    Airport = request.GET.get('airport')
+    Username = request.GET.get('username')
+
+    c = cabOrder.objects.filter(user__username=Username).exclude(accept=0).exclude(accept=1).exclude(accept=2)
+    list = []
+    for i in c:
+        serial = cabOrderSerializer(i)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})
+
+
 def placeOrder(request):
     proid = request.GET.get('productid')
     Username = request.GET.get('username')    
     Q = request.GET.get('quantity')
     Pickup = request.GET.get('selfpickup')
     Date = request.GET.get('date')
+    vid = request.GET.get('cabid')
     
+    if vid is not None:
+        cord = cabOrder.objects.get(cabid=vid)
+    else:
+        cord = None
+
     if Date is None:
         Date = timezone.now()
     else:
@@ -456,7 +476,7 @@ def placeOrder(request):
     w3.amount = w3.amount + 0.2*a
 
 
-    o = order(user=user1,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
+    o = order(user=user1,cab=cord,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
     o.save()
     w.save()
     w1.save()

@@ -28,7 +28,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-from .tasks import bookcab1
+from .tasks import bookcab1,dispatchDelivery
 import s2geometry as s2
 
 # import s2geometry as s2
@@ -419,7 +419,14 @@ def addCab(request):
 
     c = cabOrder.objects.get(cabid=cid)
     od = order.objects.get(orderid=o)
+    
+    if od.accept==1:
+        dispatchDelivery.apply_async(args=[d.orderid],eta=d.cab.pickupTime - timedelta(minutes=15))
+        d.accept = 100
+    d.save()
     od.selfpickup = False
+
+    
 
     od.cab = c
 
@@ -505,3 +512,32 @@ def mainnlp(request):
 
     # return i
     return JsonResponse({'result':1})
+
+def isInside(lat,long,p):
+    latlng1 = s2.S2LatLng.FromDegrees(lat,long)
+    cell1 = s2.S2CellId(latlng1)
+    return p.contains(cell1)
+
+
+def fareestimator(request):
+    Time = request.GET.get('time')
+    Dis = request.GET.get('distance')
+    Class = request.GET.get('class')
+    Latitude = request.GET.get('latitude')
+    Longitude = request.GET.get('longitude')
+
+
+    link1 = 'https://vimansathi.firebaseio.com/cab.json'
+    response = requests.get(link1)
+    response = response.json()
+
+    userall = userdetails.objects.all()
+
+    p = cell.parent(11)
+    count = 0
+    for u in userall:
+        if u.category == 'CAB' and u.cabIdle == True:
+            if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                count += 1
+
+            
