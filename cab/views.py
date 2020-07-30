@@ -24,6 +24,7 @@ import random
 import json
 import uuid
 import re
+import requests
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
@@ -530,14 +531,26 @@ def fareestimator(request):
     link1 = 'https://vimansathi.firebaseio.com/cab.json'
     response = requests.get(link1)
     response = response.json()
-
+    latlng = s2.S2LatLng.FromDegrees(float(Latitude),float(Longitude))
+    cell = s2.S2CellId(latlng)
+    
     userall = userdetails.objects.all()
 
     p = cell.parent(11)
     count = 0
     for u in userall:
         if u.category == 'CAB' and u.cabIdle == True:
-            if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
-                count += 1
+            try:
+                if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                    count += 1
+            except:
+                continue
 
-            
+
+    link1 = 'http://dj-prod.eba-rmcmhham.ap-south-1.elasticbeanstalk.com/api/predictfare?time='+Time+'&distance='+Dis+'&class='+Class+'&availability='+str(count)
+    print(link1)
+    response = requests.get(link1)
+    response = response.json()
+
+    return JsonResponse({'result':response['result']})
+   

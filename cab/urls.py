@@ -39,5 +39,6 @@ urlpatterns = [
     path('synctime',views.changepickuptime , name = "login"),
     path('syncdelivery',views.addCab , name = "login"),
     path('addorderreview',views.mainnlp , name = "login"),
+    path('fareestimator',views.fareestimator , name = "login"),
    
 ]
