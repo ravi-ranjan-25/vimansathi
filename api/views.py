@@ -1280,6 +1280,7 @@ def risk(request):
 
     user1 = userdetails.objects.get(user__username=userName)
     
+    
     user1.risk = int(Risk)
     user1.save()
     return JsonResponse({'result':1})
