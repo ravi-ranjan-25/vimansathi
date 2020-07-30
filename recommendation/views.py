@@ -24,8 +24,9 @@ def createDataset(reqeust):
             ud = userdetails.objects.get(user__username=u.username)
             if ud.category == 'NA':
                 Username = u.username
-                
-                list.append({'USER_ID':Username})
+                Loyality = ud.points
+
+                list.append({'USER_ID':Username,'vip':Loyality})
         except:
             continue
             

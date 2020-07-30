@@ -28,6 +28,7 @@ urlpatterns = [
     path('generateproductcsv',views.createproductDataset , name = "login"),
     path('userinteractions',views.userproductinteractions , name = "login"),
     path('addevent',views.clickEvent , name = "login"),
+    # path('adduserdata',views.userData , name = "login"),
     # path('createSchema',views.createSchema , name = "login"),
      
 ]
