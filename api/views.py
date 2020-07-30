@@ -736,10 +736,10 @@ def paytmCall1(request):
         w = wallet.objects.get(user__username=username1)
         w.amount = w.amount + float(am)
         
-        txnid1 = random.randint(100,999) + random.randint(9999,10000) + user1.pk
+        txnid1 = random.randint(100,999) + random.randint(9999,10000)
 
-        txn = "TXN25"+str(complaint)
-        
+        txn = "TXN25"+str(txnid1)
+        user1 = User.objects.get(username=username1)
         t = Tax(user = user1,Order=None,txnid=txnid1,credit=True,amount=float(am))
         t.save()
 
