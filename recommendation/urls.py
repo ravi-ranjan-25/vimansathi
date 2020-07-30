@@ -29,6 +29,7 @@ urlpatterns = [
     path('userinteractions',views.userproductinteractions , name = "login"),
     path('addevent',views.clickEvent , name = "login"),
     path('generateinteractions',views.interationsUser , name = "login"),
+    path('getrecommendation',views.recommendationget , name = "login"),
     # path('adduserdata',views.userData , name = "login"),
     # path('createSchema',views.createSchema , name = "login"),
      

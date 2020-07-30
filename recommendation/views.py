@@ -10,6 +10,37 @@ from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor
 from django.contrib.auth.models import User
 import json
 from recommendation.models import userinteraction
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
+from django.contrib.auth.models import User
+from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer
+
+
+def recommendationget(request):
+    Username = request.GET.get('username')
+    Airport = request.GET.get('airport')
+
+    personalizeRt = boto3.client('personalize-runtime')
+
+    response = personalizeRt.get_recommendations(
+        campaignArn = 'arn:aws:personalize:ap-south-1:413538326238:campaign/viman-campaign',
+        userId = Username)
+
+    listshop = []
+    listrestro = []
+    listhotel = []
+    for i in response['itemList']:
+        ud = userdetails.objects.get(user=i.user)
+        if ud.airport == Airport.upper():
+            pro = Product.objects.get(productid=i)
+            serial = ProductSerializer(i)
+            if ud.category == 'STORE':
+                listshop.append(serial.data)
+            elif ud.category == 'RESTAURANTS':
+                listrestro.append(serial.data)
+            elif ud.category == 'HOTEL':
+                listhotel.append(serial.data)        
+
+    return JsonResponse({'store':listshop,'restro':listrestro,'hotel':listhotel})
 
 def createDataset(reqeust):
     # wb = Workbook()
