@@ -175,4 +175,4 @@ def interationsUser(request):
         # if u.USER_ID not in list1:   
         #     count += 1
         #     list1.append(u.USER_ID)
-    return JsonResponse({'count':count,'result':list})    
+    return JsonResponse({'result':list})    
