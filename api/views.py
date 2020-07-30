@@ -229,7 +229,7 @@ def login(request):
         house = userdetails.objects.get(user = user1)
         return JsonResponse({'result':1,'username':user1.username,'email':user1.email,'firstname':user1.first_name,
                                 'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,
-                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude})
+                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude,'vip':house.vip,'risk':house.risk,'time':house.time})
     
     else:
         return JsonResponse({'result':0,'message':'Incorrect username or password'})
@@ -1280,8 +1280,10 @@ def risk(request):
 
     user1 = userdetails.objects.get(user__username=userName)
     
-    
+    Time = datetime.datetime.strptime(Time, '%Y-%m-%d.%f')
+
     user1.risk = int(Risk)
+    user1.time = Time
     user1.save()
     return JsonResponse({'result':1})
 
