@@ -71,7 +71,7 @@ def dispatch(cid):
 def dispatchdilevery(od):
     wasassigned = []
     C = order.objects.get(orderid=od)
-    ud1 = order.objects.get(user__username=C.product.user.username)
+    ud1 = userdetails.objects.get(user__username=C.product.user.username)
 
     latlng = s2.S2LatLng.FromDegrees(float(ud1.latitude),float(ud1.longitude))
     cell = s2.S2CellId(latlng)
