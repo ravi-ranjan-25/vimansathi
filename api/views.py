@@ -229,7 +229,7 @@ def login(request):
         house = userdetails.objects.get(user = user1)
         return JsonResponse({'result':1,'username':user1.username,'email':user1.email,'firstname':user1.first_name,
                                 'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,
-                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude,'vip':house.vip,'risk':house.risk,'time':house.time})
+                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude,'vip':house.vip,'risk':house.risk,'tSime':house.time})
     
     else:
         return JsonResponse({'result':0,'message':'Incorrect username or password'})
@@ -1276,11 +1276,11 @@ def setdocactive(request):
 def risk(request):
     userName = request.GET.get('username')
     Risk = request.GET.get('risk')
-    Time = request.GET.get('time')
+    # Time = request.GET.get('time')
 
     user1 = userdetails.objects.get(user__username=userName)
     
-    Time = datetime.datetime.strptime(Time, '%Y-%m-%d.%f')
+    Time = timezone.now()
 
     user1.risk = int(Risk)
     user1.time = Time
