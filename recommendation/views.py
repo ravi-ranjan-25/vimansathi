@@ -167,6 +167,7 @@ def clickEvent(request):
 def interationsUser(request):
 
     userall=userinteraction.objects.all()
+    list1 = []
     list = []
     count = 0
     for u in userall:
