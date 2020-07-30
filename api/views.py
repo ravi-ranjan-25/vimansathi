@@ -1276,7 +1276,7 @@ def setdocactive(request):
 def risk(request):
     userName = request.GET.get('username')
     Risk = request.GET.get('risk')
-
+    Time = request.GET.get('time')
 
     user1 = userdetails.objects.get(user__username=userName)
     
@@ -1636,3 +1636,12 @@ def cxcontact(request):
     for i in answer:
         a = i 
     return JsonResponse({'result':i})
+
+def isVip(request):
+    Username = request.GET.get('username')
+
+    ud = userdetails.objects.get(user__username=Username)
+
+    ud.save()
+    return JsonResponse({'result':ud.vip})
+
