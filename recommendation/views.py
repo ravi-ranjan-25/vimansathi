@@ -19,7 +19,7 @@ def recommendationget(request):
     Username = request.GET.get('username')
     Airport = request.GET.get('airport')
 
-    personalizeRt = boto3.client('personalize-runtime')
+    personalizeRt = boto3.client('personalize-runtime',region_name='ap-south-1')
 
     response = personalizeRt.get_recommendations(
         campaignArn = 'arn:aws:personalize:ap-south-1:413538326238:campaign/viman-campaign',
