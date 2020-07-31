@@ -90,8 +90,8 @@ def dispatchdilevery(od):
         for u in userall:
             if u.user.username not in wasassigned:
                 try:
-                    if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
-                        if u.category == 'DELIVERY' and u.deli == False:
+                    if u.category == 'DELIVERY' and u.deli == False:
+                        if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                             ud = userdetails.objects.get(user__username = u.user.username)
                             C.delivery = ud.user
                             ud.deli = True
@@ -109,7 +109,7 @@ def dispatchdilevery(od):
                                 ud.co = C
                                 ud.accepted += 1
                                 break  
-                except KeyError:
+                except:
                     continue
         print(1)
         count -= 1

@@ -1,6 +1,7 @@
 from celery import shared_task,app
 from time import sleep
 from cab.models import cabOrder
+from api.models import order
 from vimansathi.celery import app
 from .funcs import dispatch,isInside,dispatchdilevery
 

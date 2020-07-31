@@ -670,11 +670,14 @@ def storeorder(request):
         o.preparing_packaging = True
         
         if d.cab is not None:
-            dispatchDelivery.apply_async(args=[d.orderid],eta=d.cab.pickupTime - timedelta(minutes=15))
+            print(1)
+            dispatchDelivery.apply_async(args=[d.orderid],eta=timezone.now())
+            # dispatchDelivery.apply_async(args=[d.orderid],eta=d.cab.pickupTime - timedelta(minutes=15))
             d.accept = 100
         else:
             d.accept = 1
-
+        print(d.accept)
+        
     if dispatched1 is not None:
         o.dispatched = True
         d.accept = 2
@@ -848,7 +851,7 @@ def deliverypending(request):
 
     ud = userdetails.objects.get(user__username=Username)
     if(ud.deli == False):
-        ss = order.objects.filter(accept=1,delivery=None).exclude(selfpickup=True)
+        ss = order.objects.filter(accept=100,delivery=None).exclude(selfpickup=True)
         
         list = []
         for s in ss:
