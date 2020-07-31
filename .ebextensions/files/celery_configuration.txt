@@ -52,4 +52,4 @@ sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf update
  
 # # Start/Restart celeryd through supervisord
 sudo /usr/local/bin/supervisorctl -c /etc/supervisord.conf restart celeryd-worker
-#asssxx
+#asssxxd
