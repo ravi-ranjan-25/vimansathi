@@ -737,7 +737,7 @@ def paytmCall1(request):
         w.amount = w.amount + float(am)
         
         txnid1 = random.randint(100,999) + random.randint(9999,10000)
-
+        w.save()
         txn = "TXN25"+str(txnid1)
         user1 = User.objects.get(username=username1)
         t = Tax(user = user1,Order=None,txnid=txnid1,credit=True,amount=float(am))
