@@ -39,6 +39,8 @@ class cabOrder(models.Model):
     accept = models.IntegerField(default=-1,max_length=256)
     time = models.DateTimeField(default = timezone.now())
     pickupTime = models.DateTimeField(default = timezone.now())
+    airport = models.CharField(unique=False,default='NA',max_length=256)
+    From = models.BooleanField(default=True,max_length=256)
     rating = models.FloatField(default=0,max_length=10)
 
 

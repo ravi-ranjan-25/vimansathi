@@ -107,9 +107,18 @@ def caborder(request):
     Price = request.GET.get('price')
     Type = int(request.GET.get('type'))
     pl = request.GET.get('picklater')
-    
+    Air = request.GET.get('airport')
+    toAirport = request.GET.get('toairport')
+    if Air is None:
+        Air = 'CCU'
+
+    if toAirport == 'y':
+        toAirport = False    
+    else:
+        toAirport = True
+
     if pl is not None:
-        pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S.%f')
+        pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S')
     else:
         pl = timezone.now()
 
@@ -123,10 +132,10 @@ def caborder(request):
     user1 = User.objects.get(username=Username)
     user2 = User.objects.get(username='admin')
     cid = 'CAB'+str(random.randint(9999,99999))    
-    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper(),latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10)
+    c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper(),latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10,airport=Air.upper(),From=toAirport)
     ccc = 'xa'
     c.save()
-    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
+    # bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
@@ -544,4 +553,21 @@ def fareestimator(request):
                 continue
 
     return JsonResponse({'result':count})
-   
+
+def getrecentcabs(request):
+    D = request.GET.get('date')
+    Username = request.GET.get('username')
+    Airport = request.GET.get('airport')
+
+    Date=datetime.datetime.strptime(D, '%Y-%m-%d')
+
+    CO = cabOrder.objects.filter(pickupTime__day=Date.day,pickupTime__month=Date.month,pickupTime__year=Date.year,user__username=Username,From=True).exclude(accept=1).exclude(accept=2).exclude(accept=3).exclude(accept=4)
+    list = []
+    print(CO)
+    for c in CO:
+        if c.airport == Airport:
+            serial = cabOrderSerializer(c)
+            list.append(serial.data)
+
+
+    return JsonResponse({'result':list})
