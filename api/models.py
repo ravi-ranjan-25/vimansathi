@@ -134,6 +134,8 @@ class userdetails(models.Model):
     rejected = models.IntegerField(default=1)
     vip = models.BooleanField(default=False)
     points = models.IntegerField(default=0)
+    approve = models.BooleanField(default=False)
+    complain = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username

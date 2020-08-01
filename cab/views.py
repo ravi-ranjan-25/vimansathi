@@ -134,8 +134,9 @@ def caborder(request):
     cid = 'CAB'+str(random.randint(9999,99999))    
     c = cabOrder(cartype=c,cabid=cid,user=user1,origin=Origin.upper(),destination=Destination.upper(),latitudeOrigin=latorigin,longitudeOrigin=longorigin,latitudeDestination=latdestination,longitudeDestination=longdestination,seat=Seat,price=Price,pickupTime=pl,accept=-10,airport=Air.upper(),From=toAirport)
     ccc = 'xa'
+    
     c.save()
-    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
+    # bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
@@ -571,3 +572,34 @@ def getrecentcabs(request):
 
 
     return JsonResponse({'result':list})
+
+def approveShop(request):
+    Approve = request.GET.get('approve')
+    Username = request.GET.get('username')
+
+    ud = userdetails.objects.get(user__username=Username)
+    ud.approve = True
+
+    ud.save()
+
+    return JsonResponse({'result':1})
+
+def complainShop(request):
+    Complain = request.GET.get('complain')
+    Username = request.GET.get('username')
+    
+    ud = userdetails.objects.get(user__username=Username)
+
+    if Complain == 'y':
+        ud.complain = True
+        p = Product.objects.filter(user__username=Username)
+        for i in p:
+            i.active = False
+            i.save()
+    else:
+        ud.complain = False
+        
+            
+    ud.save()
+
+    return JsonResponse({'result':1})

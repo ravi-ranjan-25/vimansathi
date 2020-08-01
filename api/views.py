@@ -1651,3 +1651,43 @@ def isVip(request):
     ud.save()
     return JsonResponse({'result':ud.vip})
 
+
+
+def approveShop(request):
+    Username = request.GET.get('username')
+
+    ud = userdetails.objects.get(user__username=Username)
+    ud.approve = True
+
+    ud.save()
+
+    return JsonResponse({'result':1})
+
+def complainShop(request):
+    Complain = request.GET.get('disable')
+    Username = request.GET.get('username')
+    
+    ud = userdetails.objects.get(user__username=Username)
+
+    if Complain == 'y':
+        ud.complain = True
+        p = Product.objects.filter(user__username=Username)
+        for i in p:
+            i.active = False
+            i.save()
+    else:
+        ud.complain = False
+        
+            
+    ud.save()
+
+    return JsonResponse({'result':1})
+
+def approves(request):
+    ud = userdetails.objects.filter(approve=False).exclude(category='NA')
+    list = []
+    for u in ud:
+        serial = userdetailsSerializer(u)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})
