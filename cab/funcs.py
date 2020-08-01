@@ -35,6 +35,7 @@ def dispatch(cid):
                 
                 print(u.user.username)
                 try:
+                    print(112)
                     if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                     # if isInside(float(response['sunil']['latitude']),float(response['sunil']['longitude']),p) == True:
                         print('inside this loop')
