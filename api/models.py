@@ -88,6 +88,7 @@ class Product(models.Model):
 
 
 class order(models.Model):
+    flight = models.ForeignKey(book,on_delete = models.CASCADE,default=None,null=True)
     user = models.ForeignKey(User,on_delete = models.CASCADE,related_name='user')
     product = models.ForeignKey(Product,on_delete = models.CASCADE)
     amount = models.FloatField(default=0.00,max_length=256)
