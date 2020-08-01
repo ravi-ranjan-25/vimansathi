@@ -31,13 +31,17 @@ def dispatch(cid):
     while True:
         p = cell.parent(count)
         for u in userall:
-            if u.user.username is not wasassigned:
+            if u.user.username not in wasassigned:
+                
+                print(ud.user.username)
                 try:
                     if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                         if u.category == 'CAB' and u.cabIdle == True:
                             c = cabdetails.objects.get(user__username = u.user.username)
                             ud = userdetails.objects.get(user__username = u.user.username)
                             if c.cartype == C.cartype:
+                                print(1)
+                                print(ud.user.username)
                                 C.cab = c
                                 ud.cabIdle = False
                                 C.accept = 11
