@@ -21,6 +21,7 @@ import s2geometry as s2
 import requests
 import joblib
 import numpy as np
+from datetime import date
 # from cab.views import mainnlp
 import re
 import nltk
@@ -229,7 +230,7 @@ def login(request):
         house = userdetails.objects.get(user = user1)
         return JsonResponse({'result':1,'username':user1.username,'email':user1.email,'firstname':user1.first_name,
                                 'lastname':user1.last_name,'mobile':house.mobile,'objectName':house.objectname,
-                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude,'vip':house.vip,'risk':house.risk,'tSime':house.time})
+                                'address':house.airport,'category':house.category,'airport':house.airport,'latitude':house.latitude,'longitude':house.longitude,'vip':house.vip,'risk':house.risk,'tSime':house.time,'approved':house.approve,'storeActive':house.complain})
     
     else:
         return JsonResponse({'result':0,'message':'Incorrect username or password'})
@@ -437,7 +438,13 @@ def placeOrder(request):
     Pickup = request.GET.get('selfpickup')
     Date = request.GET.get('date')
     vid = request.GET.get('cabid')
-    
+    pnr = request.GET.get('pnr')
+
+    if Pnr is not None:
+        Book = book.objects.get(pnr=Pnr)
+    else:
+        Book = None
+
     if vid is not None:
         cord = cabOrder.objects.get(cabid=vid)
     else:
@@ -476,7 +483,7 @@ def placeOrder(request):
     w3.amount = w3.amount + 0.2*a
 
 
-    o = order(user=user1,cab=cord,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
+    o = order(book=Book,user=user1,cab=cord,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
     o.save()
     w.save()
     w1.save()
@@ -1692,3 +1699,14 @@ def approves(request):
 
     return JsonResponse({'result':list})
 
+def recentflightOrders(request):
+    Username = request.GET.get('username')
+
+    d = date.today()
+    b = book.objects.filter(dayobject__date__gte=d)
+    list = []
+    for i in b:
+        serial = bookSerializer(i)
+        return list.append(serial.data)
+
+    return JsonResponse({'result':list})    
