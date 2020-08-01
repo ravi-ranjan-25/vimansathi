@@ -43,4 +43,5 @@ class cabOrderSerializer(serializers.Serializer):
     seat = serializers.IntegerField()
     price=serializers.FloatField()
     accept = serializers.IntegerField()
+    pickupTime = serializers.DateTimeField()
     time = serializers.DateTimeField()

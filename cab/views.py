@@ -121,7 +121,7 @@ def caborder(request):
         pl=datetime.datetime.strptime(pl, '%Y-%m-%d %H:%M:%S.%f')
     else:
         pl = timezone.now()
-
+    print(pl)
     typeArr = ['SEDAN','AUTO','BIKE','MINI']
 
     t = typeArr[Type]
