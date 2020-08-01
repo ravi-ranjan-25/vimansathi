@@ -851,7 +851,7 @@ def deliverypending(request):
 
     ud = userdetails.objects.get(user__username=Username)
     if(ud.deli == False):
-        ss = order.objects.filter(accept=100,delivery=None).exclude(selfpickup=True)
+        ss = order.objects.filter(accept=100,delivery=ud.user).exclude(selfpickup=True)
         
         list = []
         for s in ss:

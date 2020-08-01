@@ -94,7 +94,7 @@ def dispatchdilevery(od):
                         if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                             ud = userdetails.objects.get(user__username = u.user.username)
                             C.delivery = ud.user
-                            ud.deli = True
+                            ud.deli = False
                             C.accept = 11
                             C.save()
                             sleep(15)
