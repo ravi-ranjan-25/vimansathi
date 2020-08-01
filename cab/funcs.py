@@ -46,6 +46,7 @@ def dispatch(cid):
                         if u.user.username != 'sunil' and u.category == 'CAB' and u.cabIdle == True:
                             c = cabdetails.objects.get(user__username = u.user.username)
                             ud = userdetails.objects.get(user__username = u.user.username)
+                            print('inside this loop 1')
                             if c.cartype == C.cartype:
                                 print(1)
                                 print(ud.user.username)
