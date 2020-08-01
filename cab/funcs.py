@@ -37,7 +37,7 @@ def dispatch(cid):
                 try:
                     if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                     # if isInside(float(response['sunil']['latitude']),float(response['sunil']['longitude']),p) == True:
-                        if u.category == 'CAB' and u.cabIdle == True:
+                        if u.user.username != 'sunil' and u.category == 'CAB' and u.cabIdle == True:
                             c = cabdetails.objects.get(user__username = u.user.username)
                             ud = userdetails.objects.get(user__username = u.user.username)
                             if c.cartype == C.cartype:
