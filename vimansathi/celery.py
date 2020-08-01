@@ -11,7 +11,8 @@ app = Celery('vimansathi')
 # app.conf.broker_read_url = 'redis://viman-ro.hmguvw.ng.0001.aps1.cache.amazonaws.com:6379'
 # app.conf.broker_url = 'redis://127.0.0.1:6379'
 app.conf.broker_url = 'redis://viman1-001.hmguvw.0001.aps1.cache.amazonaws.com:6379'
-                                    
+task_acks_late = True
+worker_prefetch_multiplier = 1                       
                            
 #this 
 # app.conf.result_backend = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379/0'
