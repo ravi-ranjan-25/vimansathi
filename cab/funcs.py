@@ -29,14 +29,18 @@ def dispatch(cid):
     
     count = 13
     while True:
+        try:
+            if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                print(1)
+        except:
+            continue        
         p = cell.parent(count)
         for u in userall:
             if u.user.username not in wasassigned:
                 
                 print(u.user.username)
-                try:
-                    print(112)
-                    if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
+                    
                     # if isInside(float(response['sunil']['latitude']),float(response['sunil']['longitude']),p) == True:
                         print('inside this loop')
                         if u.user.username != 'sunil' and u.category == 'CAB' and u.cabIdle == True:
@@ -62,8 +66,7 @@ def dispatch(cid):
                                     ud.cabO = C
                                     c.accepted += 1
                                     break  
-                except KeyError:
-                    continue
+                
         print(1)
         count -= 1
         if C.accept == 1: 
