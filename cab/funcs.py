@@ -31,9 +31,11 @@ def dispatch(cid):
     while True:
         p = cell.parent(count)
         for u in userall:
-            if u.user.username not in wasassigned:    
+            if u.user.username not in wasassigned:
+                
+                print(u.user.username)
                 try:
-                    if isInside(float(response['satish']['latitude']),float(response['satish']['longitude']),p) == True:
+                    if isInside(float(response[u.user.username]['latitude']),float(response[u.user.username]['longitude']),p) == True:
                     # if isInside(float(response['sunil']['latitude']),float(response['sunil']['longitude']),p) == True:
                         if u.category == 'CAB' and u.cabIdle == True:
                             c = cabdetails.objects.get(user__username = u.user.username)
