@@ -136,7 +136,7 @@ def caborder(request):
     ccc = 'xa'
     
     c.save()
-    # bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
+    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
 
     w1 = wallet.objects.get(user = user1)
     w2 = wallet.objects.get(user__username = 'admin')
