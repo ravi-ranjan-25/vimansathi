@@ -53,7 +53,9 @@ def createpackage(request):
     D = request.GET.get('Date')
     D=datetime.datetime.strptime(D, '%Y-%m-%d')
 
-    r  = routes.objects.filter(origin=Origin.upper(),destination=Airport.upper())
+    a = airport.objects.get(name=Origin.upper())
+    a2 = airport.objects.get(name=Airport.upper())
+    r  = routes.objects.filter(origin=a,destination=a2)
     flight = []
     for i in r:
         print(i)
