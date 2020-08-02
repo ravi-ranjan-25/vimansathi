@@ -191,9 +191,6 @@ class message(models.Model):
 
 
 
-class feedback(models.Model):
-    
-
 
 
 
