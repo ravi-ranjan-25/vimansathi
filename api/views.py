@@ -438,7 +438,7 @@ def placeOrder(request):
     Pickup = request.GET.get('selfpickup')
     Date = request.GET.get('date')
     vid = request.GET.get('cabid')
-    pnr = request.GET.get('pnr')
+    Pnr = request.GET.get('pnr')
 
     if Pnr is not None:
         Book = book.objects.get(pnr=Pnr)
@@ -1710,3 +1710,10 @@ def recentflightOrders(request):
         list.append(serial.data)
 
     return JsonResponse({'result':list})    
+
+def nlpreviews(request):
+    Username = request.GET.get('username')
+
+    s = storerestro.objects.get(Order__product__user__username=Username)
+    
+
