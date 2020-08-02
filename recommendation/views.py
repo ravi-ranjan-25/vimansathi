@@ -91,7 +91,7 @@ def createpackage(request):
         shop = listshop[0]
     else:
         ud = userdetails.objects.filter(category='SHOP',airport=Airport)[0]
-        pro = Product.objects.filter(user__username=ud.user.username)
+        pro = Product.objects.filter(user__username=ud.user.username)[0]
         serial = ProductSerializer(pro)
         shop = serial.data
 
@@ -99,7 +99,7 @@ def createpackage(request):
         restro = listrestro[0]
     else:
         ud = userdetails.objects.filter(category='RESTAURANTS',airport=Airport)[0]
-        pro = Product.objects.filter(user__username=ud.user.username)
+        pro = Product.objects.filter(user__username=ud.user.username)[0]
         serial = ProductSerializer(pro)
         restro = serial.data
 
@@ -108,7 +108,7 @@ def createpackage(request):
         shop = listhotel[0]
     else:
         ud = userdetails.objects.filter(category='HOTEL',airport=Airport)[0]
-        pro = Product.objects.filter(user__username=ud.user.username)
+        pro = Product.objects.filter(user__username=ud.user.username)[0]
         serial = ProductSerializer(pro)
         hotel = serial.data
    
