@@ -59,7 +59,7 @@ def createpackage(request):
     flight = []
     for i in r:
         print(i)
-        Da = days.objects.filter(date=D,Route=i)[-1]
+        Da = days.objects.filter(date=D,Route=i)[0]
     
         serial = daysSerializer(da)
         flight.append(serial.data)
