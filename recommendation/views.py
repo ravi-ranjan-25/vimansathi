@@ -115,7 +115,7 @@ def createpackage(request):
     
 
 
-    return JsonResponse({'store':store,'restro':restro,'hotel':hotel,'flight':flight})
+    return JsonResponse({'store':shop,'restro':restro,'hotel':hotel,'flight':flight})
 
 
 
