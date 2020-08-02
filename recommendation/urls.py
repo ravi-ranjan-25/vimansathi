@@ -30,6 +30,7 @@ urlpatterns = [
     path('addevent',views.clickEvent , name = "login"),
     path('generateinteractions',views.interationsUser , name = "login"),
     path('getrecommendation',views.recommendationget , name = "login"),
+    path('createpackage',views.createpackage , name = "login"),
     # path('adduserdata',views.userData , name = "login"),
     # path('createSchema',views.createSchema , name = "login"),
      

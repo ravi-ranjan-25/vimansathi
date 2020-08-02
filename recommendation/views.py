@@ -12,7 +12,8 @@ import json
 from recommendation.models import userinteraction
 from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book
 from django.contrib.auth.models import User
-from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer,ProductSerializer
+# from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer,ProductSerializer
+from api.serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer,bookSerializer,messageSerializer
 
 
 def recommendationget(request):
@@ -42,6 +43,81 @@ def recommendationget(request):
                 listhotel.append(serial.data)        
 
     return JsonResponse({'store':listshop,'restro':listrestro,'hotel':listhotel})
+
+def createpackage(request):
+    Username = request.GET.get('username')
+    toAirport = request.GET.get('origin')
+    fromAirport = request.GET.get('destination')
+    # Date = request.GET.get('date')
+
+    D = request.GET.get('Date')
+    D=datetime.datetime.strptime(D, '%Y-%m-%d')
+
+    r  = routes.objects.filter(origin=Origin.upper(),destination=Destination.upper())
+    flight = []
+    for i in r:
+        print(i)
+        Da = days.objects.filter(date=D,Route=i)[-1]
+    
+        serial = daysSerializer(da)
+        flight.append(serial.data)
+
+    
+    personalizeRt = boto3.client('personalize-runtime',region_name='ap-south-1')
+
+    response = personalizeRt.get_recommendations(
+        campaignArn = 'arn:aws:personalize:ap-south-1:413538326238:campaign/viman-campaign',
+        userId = Username)
+
+    listshop = []
+    listrestro = []
+    listhotel = []
+    for i in response['itemList']:
+        print(i['itemId'])
+        pro = Product.objects.get(productid=i['itemId'])
+        ud = userdetails.objects.get(user=pro.user)
+        if ud.airport == Airport.upper():
+            # serial = ProductSerializer(pro)
+            serial = ProductSerializer(pro)
+            if ud.category == 'STORE':
+                listshop.append(serial.data)
+            elif ud.category == 'RESTAURANTS':
+                listrestro.append(serial.data)
+            elif ud.category == 'HOTEL':
+                listhotel.append(serial.data)        
+    
+
+    if len(listshop) > 0:
+        shop = listshop[0]
+    else:
+        ud = userdetails.objects.filter(category='SHOP',airport=Airport)[0]
+        pro = Product.objects.filter(user__username=ud.user.username)
+        serial = ProductSerializer(pro)
+        shop = serial.data
+
+    if len(listrestro) > 0:
+        restro = listrestro[0]
+    else:
+        ud = userdetails.objects.filter(category='RESTAURANTS',airport=Airport)[0]
+        pro = Product.objects.filter(user__username=ud.user.username)
+        serial = ProductSerializer(pro)
+        restro = serial.data
+
+   
+    if len(listhotel) > 0:
+        shop = listhotel[0]
+    else:
+        ud = userdetails.objects.filter(category='HOTEL',airport=Airport)[0]
+        pro = Product.objects.filter(user__username=ud.user.username)
+        serial = ProductSerializer(pro)
+        hotel = serial.data
+   
+    
+
+
+    return JsonResponse({'store':store,'restro':restro,'hotel':hotel,'flight':flight})
+
+
 
 def createDataset(reqeust):
     # wb = Workbook()
