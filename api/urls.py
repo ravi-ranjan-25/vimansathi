@@ -96,6 +96,9 @@ urlpatterns = [
     path('admin/disableShop',views.complainShop,name = "resolve"),
     path('admin/approvallist',views.approves,name = "resolve"),
     path('admin/recentflightOrders',views.recentflightOrders,name = "resolve"),
+    path('admin/notifyStore',views.notifyStore,name = "resolve"),
+    path('admin/nlpreviews',views.nlpreviews,name = "resolve"),
+    path('getmessages',views.getmessages,name = "resolve"),
     path('findFlights',views.findFlights,name = "resolve"),
     path('bookFlights',views.bookFlights,name = "resolve"),
 

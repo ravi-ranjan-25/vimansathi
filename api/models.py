@@ -181,6 +181,13 @@ class productComplain(models.Model):
     time = models.DateTimeField(default = timezone.now())
     
 
+class message(models.Model):
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    Message = models.CharField(unique = False,default="NA",max_length=256)
+    time = models.DateTimeField(default = timezone.now())
+
+    def __str__(self):
+        return self.user.username
 
 
 

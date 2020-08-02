@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from api.models import Product,order,userdetails,Complain,Tax,cat
+from api.models import Product,order,userdetails,Complain,Tax,cat,message
 from cab.serializers import cabOrderSerializer
 
 class UserSerializer(serializers.Serializer):
@@ -120,6 +120,12 @@ class transactionSerializer(serializers.Serializer):
     amount = serializers.FloatField()
     time = serializers.DateTimeField()
 
+class messageSerializer(serializers.Serializer):
+    user = UserSerializer()
+    Message = serializers.CharField()
+    # txnid = serializers.CharField()
+    time = serializers.DateTimeField()
+
 
 
 # class EventSerializer(serializers.ModelSerializer):
@@ -152,4 +158,3 @@ class transactionSerializer(serializers.ModelSerializer):
          user1 = wall.user.username
         #  print(username)
          return user1
-

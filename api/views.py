@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book,productComplain
+from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor,Complain,Tax,cat,airport,airline,routes,days,book,productComplain,message
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.utils import timezone
@@ -10,7 +10,7 @@ from cab.models import cabOrder,cabdetails
 from rest_framework.generics import ListAPIView
 from cab.serializers import carClassSerializer,cabdetailsSerializer,cabOrderSerializer,kafkaSerializer
 import os
-from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer,bookSerializer
+from .serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer,bookSerializer,messageSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -483,7 +483,7 @@ def placeOrder(request):
     w3.amount = w3.amount + 0.2*a
 
 
-    o = order(book=Book,user=user1,cab=cord,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
+    o = order(flight=Book,user=user1,cab=cord,product=p,amount=a,orderid=proid,quantity=Q,selfpickup=Pickup,pickupDate=Date)
     o.save()
     w.save()
     w1.save()
@@ -1714,6 +1714,32 @@ def recentflightOrders(request):
 def nlpreviews(request):
     Username = request.GET.get('username')
 
-    s = storerestro.objects.get(Order__product__user__username=Username)
-    
+    s = order.objects.filter(product__user__username=Username)
+    list = []
+    for i in s:
+        list.append(i.reviewState)
+
+    return JsonResponse({'result':list})    
+
+def notifyStore(request):
+    Username = request.GET.get('username')
+    Message1 = request.GET.get('message')
+
+    user1 = User.objects.get(username=Username)
+    m = message(user=user1,Message=Message1)
+
+    m.save()
+    return JsonResponse({'result':1})    
+
+def getmessages(request):
+    Username = request.GET.get('username')
+    # Message1 = request.GET.get('message')
+    m = message.objects.filter(user__username=Username)
+    list = []
+    for i in m:
+        serial = messageSerializer(i)
+        list.append(serial.data)
+
+    return JsonResponse({'result':list})  
+
 
