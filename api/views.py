@@ -1707,6 +1707,6 @@ def recentflightOrders(request):
     list = []
     for i in b:
         serial = bookSerializer(i)
-        return list.append(serial.data)
+        list.append(serial.data)
 
     return JsonResponse({'result':list})    
