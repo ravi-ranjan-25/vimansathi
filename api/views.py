@@ -1703,7 +1703,7 @@ def recentflightOrders(request):
     Username = request.GET.get('username')
 
     d = date.today()
-    b = book.objects.filter(dayobject__date__gte=d)
+    b = book.objects.filter(dayobject__date__gte=d,username=Username)
     list = []
     for i in b:
         serial = bookSerializer(i)
