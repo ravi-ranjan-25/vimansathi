@@ -13,7 +13,7 @@ app = Celery('vimansathi')
 app.conf.broker_url = 'redis://viman1-001.hmguvw.0001.aps1.cache.amazonaws.com:6379'
 app.task_acks_late = True
 app.worker_prefetch_multiplier = 1                       
-                           
+app.timezone = 'Asia/Kolkata'                           
 #this 
 # app.conf.result_backend = 'redis://viman-001.hmguvw.0001.aps1.cache.amazonaws.com:6379/0'
 app.config_from_object('django.conf:settings')
