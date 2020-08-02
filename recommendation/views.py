@@ -14,7 +14,7 @@ from api.models import userdetails,Product,wallet,order,hotel,storerestro,Doctor
 from django.contrib.auth.models import User
 # from api.serializers import orderSerializer,userdetailsSerializer,bookSerializer,ProductSerializer
 from api.serializers import ProductSerializer,orderSerializer,userdetailsSerializer,UserSerializer,complainSerializer,transactionSerializer,catSerializer,hotelSerializer,hotelSerializer,airlineSerializer,routesSerializer,daysSerializer,airportSerializer,transactionSerializer,bookSerializer,messageSerializer
-
+import datetime
 
 def recommendationget(request):
     Username = request.GET.get('username')
@@ -46,14 +46,14 @@ def recommendationget(request):
 
 def createpackage(request):
     Username = request.GET.get('username')
-    toAirport = request.GET.get('origin')
-    fromAirport = request.GET.get('destination')
+    Origin = request.GET.get('origin')
+    Airport = request.GET.get('destination')
     # Date = request.GET.get('date')
 
     D = request.GET.get('Date')
     D=datetime.datetime.strptime(D, '%Y-%m-%d')
 
-    r  = routes.objects.filter(origin=Origin.upper(),destination=Destination.upper())
+    r  = routes.objects.filter(origin=Origin.upper(),destination=Airport.upper())
     flight = []
     for i in r:
         print(i)
