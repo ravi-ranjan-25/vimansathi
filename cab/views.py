@@ -29,7 +29,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-from .tasks import bookcab1,dispatchDelivery
+# from .tasks import bookcab1,dispatchDelivery
 import s2geometry as s2
 
 # import s2geometry as s2
@@ -136,7 +136,7 @@ def caborder(request):
     ccc = 'xa'
     
     # c.save()
-    bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
+    # bookcab1.apply_async(args=[c.cabid],eta=c.pickupTime)
     c.accept=-1
     c.save()
 

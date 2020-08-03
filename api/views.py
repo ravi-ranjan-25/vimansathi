@@ -29,7 +29,7 @@ import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-from cab.tasks import dispatchDelivery
+# from cab.tasks import dispatchDelivery
 from datetime import timedelta
 # Create your views here.
 def getcorpus():
@@ -678,7 +678,7 @@ def storeorder(request):
         
         if d.cab is not None:
             print(1)
-            dispatchDelivery.apply_async(args=[d.orderid],eta=timezone.now())
+            # dispatchDelivery.apply_async(args=[d.orderid],eta=timezone.now())
             # dispatchDelivery.apply_async(args=[d.orderid],eta=d.cab.pickupTime - timedelta(minutes=15))
             d.accept = 1
         else:
