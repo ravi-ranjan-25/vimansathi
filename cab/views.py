@@ -225,7 +225,7 @@ def showavailablerides(request):
         list.append({'User FirstName':serial.data['user']['first_name'],'cabid':serial.data['cabid'],'latitude':serial.data['latitudeOrigin'],'longitude':serial.data['longitudeOrigin']})
 
     return JsonResponse({'result':list})
-
+#ff
 def addRating(request):
     cid = request.GET.get('cabid')
     Rating = float(request.GET.get('rating'))
