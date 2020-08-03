@@ -288,4 +288,14 @@ def interationsUser(request):
                 count += 1
                 list1.append(U)
     return JsonResponse({'count':count,'result':list})    
-   
+
+# def enterfeedback(request):
+#     Username = request.GET.get('username')
+#     q1 = request.GET.get('Q1')
+#     q2 = request.GET.get('Q1')
+#     q3 = request.GET.get('Q1')
+#     q4 = request.GET.get('Q3')
+#     q5 = request.GET.get('Q5')
+#     q6 = request.GET.get('Q6')
+#     q7 = request.GET.get('Q7')
+#     q8 = request.GET.get('Q8')

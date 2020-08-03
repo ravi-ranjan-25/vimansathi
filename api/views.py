@@ -1074,7 +1074,7 @@ def findFlights(request):
     D = request.GET.get('Date')
     D=datetime.datetime.strptime(D, '%Y-%m-%d')
 
-    r = routes.objects.filter(origin=Origin.upper(),destination=Destination.upper())
+    r  = routes.objects.filter(origin=Origin.upper(),destination=Destination.upper())
     
     list = []
     for i in r:
@@ -1108,7 +1108,7 @@ def bookFlights(request):
     b = book(dayobject=d,seat=Seat,pnr=bo,amount=Seat*d.price,user=user1)
     b.save()
     
-    return JsonResponse({'result':1})
+    return JsonResponse({'pnr':b.pnr})
 
 
 def listAirport(request):
