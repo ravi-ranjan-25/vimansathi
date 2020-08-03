@@ -218,7 +218,7 @@ def showavailablerides(request):
     Username = request.GET.get('username')
     
     c = cabdetails.objects.get(user__username=Username)
-    co = cabOrder.objects.filter(cab=None,cartype=c.cartype,accept=1).exclude(accept=-10)
+    co = cabOrder.objects.filter(cab=None,cartype=c.cartype,accept=-1).exclude(accept=-10)
     list = []
     for c in co:
         serial = cabOrderSerializer(c)
