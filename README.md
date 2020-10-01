@@ -21,4 +21,4 @@ Cab services plays a integral role in the applicaton which helps in syncronizing
 
 **Tired of availing all the services separately?**
 
-![Admin End](https://github.com/endframe25/backend-aws/blob/master/static/Screenshot%20from%202020-09-22%2000-09-35.png)
+![Admin End](https://github.com/ravi-ranjan-25/vimansathi/blob/master/Screenshot%20from%202020-09-22%2000-09-35.png)
